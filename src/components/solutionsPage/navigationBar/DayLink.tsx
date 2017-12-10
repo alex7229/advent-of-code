@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IsSolved } from '../../../answers/getAnswer';
+import { IsSolved } from '../../../answers/AnswerManager';
 import { Link } from 'react-router-dom';
 
 interface Props {

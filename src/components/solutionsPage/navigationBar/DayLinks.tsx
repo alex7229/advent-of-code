@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SolutionData } from '../../../answers/getAnswer';
+import { SolutionData } from '../../../answers/AnswerManager';
 import { DayLink } from './DayLink';
 
 interface Props {

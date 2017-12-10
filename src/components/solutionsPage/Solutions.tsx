@@ -2,9 +2,10 @@ import * as React from 'react';
 import {match as IMatch, Route } from 'react-router';
 import { Solution } from './content/Solution';
 import { DayLinks } from './navigationBar/DayLinks';
-import { getSolutionsData } from '../../answers/getAnswer';
+import { AnswerManager } from '../../answers/AnswerManager';
 
-const solutionsData = getSolutionsData();
+const answerManager = new AnswerManager();
+const solutionsData = answerManager.getSolutionsData();
 
 const Solutions = ({ match }: { match: IMatch<{}> }) => {
     return (

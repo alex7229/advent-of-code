@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getAnswer } from '../../../answers/getAnswer';
+import { AnswerManager } from '../../../answers/AnswerManager';
 import { match as IMatch } from 'react-router-dom';
 import { Answer } from './Answer';
 
@@ -32,7 +32,8 @@ export class Solution extends React.Component<Props, object> {
     handleOnChange(event: React.ChangeEvent<HTMLTextAreaElement>, textAreaNumber: SolutionPart): void {
         const currentDay = this.props.match.params.day;
         const input = event.target.value;
-        const answer = getAnswer(currentDay, textAreaNumber, input);
+        const answerManger = new AnswerManager(currentDay, textAreaNumber, input);
+        const answer = answerManger.getAnswer();
         this.setState({
             [textAreaNumber]: { input, answer }
         });
