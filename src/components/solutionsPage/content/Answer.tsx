@@ -12,5 +12,3 @@ export const Answer = (props: Props): JSX.Element => {
         </div>
     );
 };
-
-// todo: finish first task, redo button color for first task (finished), make default template for unfinished tasks
