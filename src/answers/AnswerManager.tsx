@@ -1,5 +1,8 @@
 import { SolutionPart } from '../components/solutionsPage/content/Solution';
 import { getAnswer as getAnswer_1_1 } from './days/1/part_1/getAnswer';
+import { getAnswer as getAnswer_1_2 } from './days/1/part_2/getAnswer';
+import { getAnswer as getAnswer_2_1 } from './days/2/part_1/getAnswer';
+import { getAnswer as getAnswer_2_2 } from './days/2/part_2/getAnswer';
 
 enum IsSolved {
     notSolved,
@@ -24,11 +27,15 @@ const getDefaultAnswer = (input: string): string => {
     return `answer for this part is not available. Current input is ${input}`;
 };
 
-// todo: solution answers should be managed here
-// todo: finish first task,
-// todo: redo button color for first task (finished)
+interface AnswerManagerInterface {
+    getAnswer(): string;
+    getSolutionsData(): SolutionData[];
+}
 
-export class AnswerManager {
+// todo: finish first task
+// This class is pretty ugly. One should use setSolvedAnswers() method to store all answers manually. Import - manual.
+// Better way for this to check dynamically if getAnswer module is exist in directory with answers
+export class AnswerManager implements AnswerManagerInterface {
 
     private day: string;
     private solutionNumber: number;
@@ -72,6 +79,9 @@ export class AnswerManager {
     private setSolvedAnswers(): void {
         // day 1 solution is stored in 0 element of array
         this.setAnswer(0, SolutionPart.first, getAnswer_1_1);
+        this.setAnswer(0, SolutionPart.second, getAnswer_1_2);
+        this.setAnswer(1, SolutionPart.first, getAnswer_2_1);
+        this.setAnswer(1, SolutionPart.second, getAnswer_2_2);
 
         this.setSolvedStatus();
     }
