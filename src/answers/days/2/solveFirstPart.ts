@@ -1,44 +1,69 @@
-const splitByRows = (input: string): string[] => {
-    return input.split('\n');
-};
+import { SplitByRows } from '../../../utils';
 
-const parseRow = (input: string): number[] => {
-    const stringNumbers: string[] = input.split('\t');
-    return stringNumbers.map((stringNumber) => {
-        return parseInt(stringNumber, 10);
-    });
-};
+interface ParseRow {
+  (input: string): number[];
+}
 
-const parseInput = (input: string):  number[][] => {
-    return splitByRows(input).map(row => {
-        return parseRow(row);
-    });
-};
+interface ParseInput {
+  (input: string, splitByRows: SplitByRows, parseRow: ParseRow): number[][];
+}
 
-const checkParsedNumbers = (numbers: number[][]): boolean => {
-    return numbers.every((row) => {
-        return row.every((currentNumber => {
-            return !Number.isNaN(currentNumber);
-        }));
-    });
-};
+interface CheckParsedNumbers {
+  (numbers: number[][]): boolean;
+}
 
-const calculateAnswer = (rows: number[][]): number => {
-    return rows.map(row => {
-        const max = Math.max(...row);
-        const min = Math.min(...row);
-        return max - min;
-    }).reduce((total, current) => {
-        return total + current;
-    });
-};
+interface CalculateAnswer {
+  (rows: number[][]): number;
+}
 
-const solveFirstPart = (input: string): string => {
-    const data: number[][] = parseInput(input);
-    if (!checkParsedNumbers(data)) {
-        return 'input should be only from numbers. It`s incorrect';
+interface SolveFirstPart {
+  (
+    input: string,
+    functions: {
+      parseInput: ParseInput;
+      checkParsedNumbers: CheckParsedNumbers;
+      calculateAnswer: CalculateAnswer;
+      splitByRows: SplitByRows;
+      parseRow: ParseRow;
     }
-    return calculateAnswer(data).toString();
+  ): number;
+}
+
+export const parseRow: ParseRow = (input) => {
+  const stringNumbers: string[] = input.split('\t');
+  return stringNumbers.map((stringNumber) => {
+    return parseInt(stringNumber, 10);
+  });
 };
 
-export { solveFirstPart, parseInput, checkParsedNumbers };
+export const parseInput: ParseInput = (input, splitByRows, parseRowFunc) => {
+  return splitByRows(input).map(row => {
+    return parseRowFunc(row);
+  });
+};
+
+export const checkParsedNumbers: CheckParsedNumbers = (numbers) => {
+  return numbers.every((row) => {
+    return row.every((currentNumber => {
+      return !Number.isNaN(currentNumber);
+    }));
+  });
+};
+
+export const calculateAnswer = (rows: number[][]): number => {
+  return rows.map(row => {
+    const max = Math.max(...row);
+    const min = Math.min(...row);
+    return max - min;
+  }).reduce((total, current) => {
+    return total + current;
+  });
+};
+
+export const solveFirstPart: SolveFirstPart = (input, functions) => {
+  const data: number[][] = functions.parseInput(input, functions.splitByRows, functions.parseRow);
+  if (!functions.checkParsedNumbers(data)) {
+    throw new Error('input should be only from numbers. It`s incorrect');
+  }
+  return functions.calculateAnswer(data);
+};
