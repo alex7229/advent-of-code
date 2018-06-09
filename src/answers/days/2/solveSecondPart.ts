@@ -10,7 +10,7 @@ const findAllPairs = (input: number[]): [number, number][] => {
     let pairs: [number, number][] = [];
     for (let i = 0; i < input.length - 1; i++) {
         for (let j = i + 1; j < input.length; j++) {
-           pairs.push([input[i], input[j]]);
+            pairs.push([input[i], input[j]]);
         }
     }
     return pairs;

@@ -33,7 +33,7 @@ const calculateAnswer = (rows: number[][]): number => {
     });
 };
 
-const getAnswer = (input: string): string => {
+const solveFirstPart = (input: string): string => {
     const data: number[][] = parseInput(input);
     if (!checkParsedNumbers(data)) {
         return 'input should be only from numbers. It`s incorrect';
@@ -41,4 +41,4 @@ const getAnswer = (input: string): string => {
     return calculateAnswer(data).toString();
 };
 
-export { getAnswer, parseInput, checkParsedNumbers };
+export { solveFirstPart, parseInput, checkParsedNumbers };
