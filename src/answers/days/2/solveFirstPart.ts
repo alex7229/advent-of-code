@@ -4,11 +4,11 @@ interface ParseRow {
   (input: string): number[];
 }
 
-interface ParseInput {
+export interface ParseInput {
   (input: string, splitByRows: SplitByRows, parseRow: ParseRow): number[][];
 }
 
-interface CheckParsedNumbers {
+export interface CheckParsedNumbers {
   (numbers: number[][]): boolean;
 }
 

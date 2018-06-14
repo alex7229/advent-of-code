@@ -1,55 +1,73 @@
-import { parseInput, checkParsedNumbers } from '../part_1/getAnswer';
+import { CheckParsedNumbers } from './solveFirstPart';
 
-const sort = ([firstNumber, secondNumber]: [number, number]): [number, number] => {
-    const biggerNumber = Math.max(firstNumber, secondNumber);
-    const smallerNumber = Math.min(firstNumber, secondNumber);
-    return [ biggerNumber, smallerNumber ];
-};
+interface ParseInput {
+  (input: string): number[][];
+}
 
-const findAllPairs = (input: number[]): [number, number][] => {
-    let pairs: [number, number][] = [];
-    for (let i = 0; i < input.length - 1; i++) {
-        for (let j = i + 1; j < input.length; j++) {
-            pairs.push([input[i], input[j]]);
-        }
+interface SolveSecondPart {
+  (
+    input: string,
+    functions: {
+      parseInput: ParseInput,
+      checkParsedNumbers: CheckParsedNumbers,
+      findEvenDivision: FindEvenDivision,
+      findAllPairs: FindAllPairs,
+      calculateAnswer: CalculateAnswer
     }
-    return pairs;
-};
+  ): number;
+}
 
-const findEvenDivision = (input: [number, number][]): number => {
-    // if no division - filter can return empty array
-    const divisiblePairs =  input
-        .map((pair) => {
-            return sort(pair);
-        })
-        .filter(([ firstNumber, secondNumber ]) => {
-            return (firstNumber % secondNumber) === 0;
-        });
-    if (divisiblePairs.length !== 1) {
-        throw new Error ('There are either no divisible numbers in that row, or more than one pair');
+interface FindAllPairs {
+  (input: number[]): [number, number][];
+}
+
+interface FindEvenDivision {
+  (input: [number, number][]): number;
+}
+
+interface CalculateAnswer {
+  (rows: number[][], findEvenDivision: FindEvenDivision, findAllPairs: FindAllPairs): number;
+}
+
+export const findAllPairs: FindAllPairs = (input) => {
+  let pairs: [number, number][] = [];
+  for (let i = 0; i < input.length - 1; i++) {
+    for (let j = i + 1; j < input.length; j++) {
+      pairs.push([input[i], input[j]]);
     }
-    return divisiblePairs[0][0] / divisiblePairs[0][1];
+  }
+  return pairs;
 };
 
-const calculateAnswer = (rows: number[][]): number => {
-    return rows .map((row) => {
-        const allPairs = findAllPairs(row);
-        return findEvenDivision(allPairs);
-    }).reduce((total, current) => {
-        return total + current;
-    });
+export const findEvenDivision: FindEvenDivision = (input) => {
+  // if no division - filter can return empty array
+  const divisiblePairs =  input
+    .filter(([ firstNumber, secondNumber ]) =>
+      (firstNumber % secondNumber) === 0 || (secondNumber % firstNumber) === 0);
+  if (divisiblePairs.length !== 1) {
+    throw new Error ('There are either no divisible numbers in that row, or more than one pair');
+  }
+  const [first, second] = divisiblePairs[0];
+  return first > second ? first / second : second / first;
 };
 
-const getAnswer = (input: string): string => {
-    const numbers = parseInput(input);
-    if (!checkParsedNumbers(numbers)) {
-        return 'Input is incorrect. It should consist only from numbers';
-    }
-    try {
-        return calculateAnswer(numbers).toString();
-    } catch (error) {
-        return error.message;
-    }
+export const calculateAnswer: CalculateAnswer = (
+  rows,
+  findEvenDivisionFunc,
+  findAllPairsFunc
+): number => {
+  return rows
+    .map(row => findEvenDivisionFunc(findAllPairsFunc(row)))
+    .reduce((total, current) => total + current);
 };
 
-export { getAnswer };
+export const solveSecondPart: SolveSecondPart = (
+  input,
+  functions
+) => {
+  const numbers = functions.parseInput(input);
+  if (!functions.checkParsedNumbers(numbers)) {
+    throw new Error( 'Input is incorrect. It should consist only from numbers');
+  }
+  return functions.calculateAnswer(numbers, functions.findEvenDivision, functions.findAllPairs);
+};
