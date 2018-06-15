@@ -1,4 +1,4 @@
-import { calculateCaptcha, checkInput, solveFirstPart } from '../../../../answers/days/1/solveFirstPart';
+import { calculateCaptcha, checkInput, day1Part1 } from '../../../../answers/days/1/part1';
 import { findArraySum } from '../../../../utils';
 
 describe('day 1, first part', () => {
@@ -18,31 +18,24 @@ describe('day 1, first part', () => {
     expect(calculateCaptcha('121', findArraySum)).toBe(0);
   });
 
-  describe('solve first part wrapper', () => {
+  describe('day1Part1 first part wrapper', () => {
 
     it('should throw if input in incorrect', () => {
       const checkInputMock = jest.fn().mockReturnValue(false);
-      expect(() => solveFirstPart('', jest.fn(), checkInputMock, jest.fn())).toThrow();
+      expect(() => day1Part1('', jest.fn(), checkInputMock, jest.fn())).toThrow();
     });
 
     it('should call calculate captcha with correct input', () => {
       const calculateCaptchaMock = jest.fn().mockReturnValue(17);
       const checkInputMock = jest.fn().mockReturnValue(true);
       const findArraySumMock = jest.fn();
-      const answer = solveFirstPart('233', calculateCaptchaMock, checkInputMock, findArraySumMock);
+      const answer = day1Part1('233', calculateCaptchaMock, checkInputMock, findArraySumMock);
       expect(calculateCaptchaMock.mock.calls.length).toBe(1);
       expect(calculateCaptchaMock.mock.calls[0][0]).toBe('2332');
       expect(calculateCaptchaMock.mock.calls[0][1]).toBe(findArraySumMock);
       expect(answer).toBe(17);
     });
 
-    it('real tests', () => {
-      const solve = (input: string) => solveFirstPart(input, calculateCaptcha, checkInput, findArraySum);
-      expect(solve('1122')).toBe(3);
-      expect(solve('1111')).toBe(4);
-      expect(solve('1234')).toBe(0);
-      expect(solve('91212129')).toBe(9);
-    });
   });
 
 });

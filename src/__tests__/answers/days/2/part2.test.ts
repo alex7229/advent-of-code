@@ -1,7 +1,5 @@
-import { findAllPairs, findEvenDivision, solveSecondPart } from '../../../../answers/days/2/solveSecondPart';
-import { calculateAnswer } from '../../../../answers/days/2/solveSecondPart';
-import { parseInputFactory } from '../../../../answers/days/2/solveFirstPartFactories';
-import { checkParsedNumbers } from '../../../../answers/days/2/solveFirstPart';
+import { findAllPairs, findEvenDivision, solveSecondPart } from '../../../../answers/days/2/part2';
+import { calculateAnswer } from '../../../../answers/days/2/part2';
 
 describe('day 2, part 2', () => {
 
@@ -44,7 +42,7 @@ describe('day 2, part 2', () => {
     });
   });
 
-  describe('solve wrapper function', () => {
+  describe('day1Part1 wrapper function', () => {
 
     const defaultFunctions = {
       parseInput: jest.fn(),
@@ -72,18 +70,6 @@ describe('day 2, part 2', () => {
         }
       };
       expect(() => solveSecondPart('', functions)).toThrow();
-    });
-
-    it('real tests', () => {
-      const input = '5\t9\t2\t8\n9\t4\t7\t3\n3\t8\t6\t5';
-      const functions = {
-        parseInput: parseInputFactory,
-        checkParsedNumbers: checkParsedNumbers,
-        findEvenDivision: findEvenDivision,
-        findAllPairs: findAllPairs,
-        calculateAnswer: calculateAnswer
-      };
-      expect(solveSecondPart(input, functions)).toBe(9);
     });
 
   });

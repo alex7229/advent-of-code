@@ -1,4 +1,4 @@
-import { SplitByRows } from '../../../utils';
+import { splitByRows, SplitByRows } from '../../../utils';
 
 interface ParseRow {
   (input: string): number[];
@@ -16,15 +16,17 @@ interface CalculateAnswer {
   (rows: number[][]): number;
 }
 
-interface SolveFirstPart {
+export interface ParseInputFactory {
+  (input: string): number[][];
+}
+
+interface Day2Part1 {
   (
     input: string,
     functions: {
-      parseInput: ParseInput;
+      parseInput: ParseInputFactory;
       checkParsedNumbers: CheckParsedNumbers;
       calculateAnswer: CalculateAnswer;
-      splitByRows: SplitByRows;
-      parseRow: ParseRow;
     }
   ): number;
 }
@@ -36,8 +38,8 @@ export const parseRow: ParseRow = (input) => {
   });
 };
 
-export const parseInput: ParseInput = (input, splitByRows, parseRowFunc) => {
-  return splitByRows(input).map(row => {
+export const parseInput: ParseInput = (input, splitByRowsFunc, parseRowFunc) => {
+  return splitByRowsFunc(input).map(row => {
     return parseRowFunc(row);
   });
 };
@@ -60,10 +62,16 @@ export const calculateAnswer = (rows: number[][]): number => {
   });
 };
 
-export const solveFirstPart: SolveFirstPart = (input, functions) => {
-  const data: number[][] = functions.parseInput(input, functions.splitByRows, functions.parseRow);
+export const part1: Day2Part1 = (input, functions) => {
+  const data: number[][] = functions.parseInput(input);
   if (!functions.checkParsedNumbers(data)) {
     throw new Error('input should be only from numbers. It`s incorrect');
   }
   return functions.calculateAnswer(data);
 };
+
+export const parseInputFactory: ParseInputFactory = (input) =>
+  parseInput(input, splitByRows, parseRow);
+
+export const day2Part1Factory = (input: string) =>
+  part1(input, {parseInput: parseInputFactory, calculateAnswer, checkParsedNumbers});

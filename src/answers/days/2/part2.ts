@@ -1,10 +1,10 @@
-import { CheckParsedNumbers } from './solveFirstPart';
+import { checkParsedNumbers, CheckParsedNumbers, parseInputFactory } from './part1';
 
 interface ParseInput {
   (input: string): number[][];
 }
 
-interface SolveSecondPart {
+interface Part2 {
   (
     input: string,
     functions: {
@@ -61,7 +61,7 @@ export const calculateAnswer: CalculateAnswer = (
     .reduce((total, current) => total + current);
 };
 
-export const solveSecondPart: SolveSecondPart = (
+export const solveSecondPart: Part2 = (
   input,
   functions
 ) => {
@@ -71,3 +71,12 @@ export const solveSecondPart: SolveSecondPart = (
   }
   return functions.calculateAnswer(numbers, functions.findEvenDivision, functions.findAllPairs);
 };
+
+export const day2Part2Factory = (input: string) =>
+  solveSecondPart(input, {
+    checkParsedNumbers: checkParsedNumbers,
+    calculateAnswer,
+    findEvenDivision,
+    findAllPairs,
+    parseInput: parseInputFactory
+  });

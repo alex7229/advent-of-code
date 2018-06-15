@@ -1,8 +1,8 @@
-import { CheckInput } from './solveFirstPart';
+import { checkInput, CheckInput } from './part1';
 
 interface ComparingPair {
-    firstPosition: number;
-    secondPosition: number;
+  firstPosition: number;
+  secondPosition: number;
 }
 
 interface FindComparingPairs {
@@ -13,7 +13,7 @@ interface CalculateCaptcha {
   (input: string): number;
 }
 
-interface SolveSecondPart {
+interface Day1Part2 {
   (input: string, checkInput: CheckInput, calculateCaptcha: CalculateCaptcha): number;
 }
 
@@ -48,9 +48,11 @@ export const calculateCaptcha: CalculateCaptcha = (input) => {
   });
 };
 
-export const solveSecondPart: SolveSecondPart = (input, checkInput, calculateCaptchaFunc) => {
-  if (!checkInput(input)) {
+export const day1Part2: Day1Part2 = (input, checkInputFunc, calculateCaptchaFunc) => {
+  if (!checkInputFunc(input)) {
     throw new Error( 'Only numbers should be in the input');
   }
   return calculateCaptchaFunc(input);
 };
+
+export const day1Part2Factory = (input: string) => day1Part2(input, checkInput, calculateCaptcha);

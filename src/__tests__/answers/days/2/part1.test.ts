@@ -3,9 +3,8 @@ import {
   checkParsedNumbers,
   parseInput,
   parseRow,
-  solveFirstPart
-} from '../../../../answers/days/2/solveFirstPart';
-import { splitByRows } from '../../../../utils';
+  part1
+} from '../../../../answers/days/2/part1';
 
 describe('day 2, part 1', () => {
 
@@ -45,38 +44,18 @@ describe('day 2, part 1', () => {
     });
   });
 
-  describe('solve wrapper', () => {
+  describe('day1Part1 wrapper', () => {
 
     it('should call check input correctly and throw if input is parsed incorrectly', () => {
       const input = `2\t5\tgsa`;
       const functions = {
         parseInput: jest.fn().mockReturnValue([[2, NaN]]),
         checkParsedNumbers: jest.fn().mockReturnValue(false),
-        calculateAnswer: jest.fn(),
-        splitByRows: jest.fn(),
-        parseRow: jest.fn()
+        calculateAnswer: jest.fn()
       };
-      expect(() => solveFirstPart(input, functions)).toThrow();
+      expect(() => part1(input, functions)).toThrow();
       expect(functions.parseInput.mock.calls.length).toBe(1);
-      const parseInputArguments = functions.parseInput.mock.calls[0];
-      expect(parseInputArguments[0]).toBe(input);
-      expect(parseInputArguments[1]).toBe(functions.splitByRows);
-      expect(parseInputArguments[2]).toBe(functions.parseRow);
-    });
-
-    it('real tests', () => {
-      const input =
-        '5\t1\t9\t5\n' +
-        '7\t5\t3\n' +
-        '2\t4\t6\t8';
-      const functions = {
-        parseInput,
-        parseRow,
-        checkParsedNumbers,
-        calculateAnswer,
-        splitByRows
-      };
-      expect(solveFirstPart(input, functions)).toBe(18);
+      expect(functions.parseInput.mock.calls[0][0]).toBe(input);
     });
 
   });

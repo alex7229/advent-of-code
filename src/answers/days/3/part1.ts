@@ -15,6 +15,7 @@ interface GetField {
       getNextPosition: GetNextPosition;
       getNextDesiredDirection: GetNextDesiredDirection;
       getPossibleDirections: GetPossibleDirections;
+      getNextNumber: GetNextNumber;
     }
   ): Field;
 }
@@ -44,6 +45,30 @@ interface GetPosition {
 
 interface GetDistance {
   (first: Position, second: Position): number;
+}
+
+interface GetNextNumber {
+  (previousNumber: number, position: Position, field: Field): number;
+}
+
+interface GetFieldSize {
+  (input: number): number;
+}
+
+interface GetAnswer {
+  (
+    input: number,
+    functions: {
+      getNextPosition: GetNextPosition;
+      getPosition: GetPosition;
+      getNextDesiredDirection: GetNextDesiredDirection;
+      getPossibleDirections: GetPossibleDirections;
+      getNextNumber: GetNextNumber;
+      getFieldSize: GetFieldSize;
+      getField: GetField;
+      getDistance: GetDistance;
+    }
+  ): number;
 }
 
 export const getNextDesiredDirection: GetNextDesiredDirection = (previousDirection, possibleDirections) => {
@@ -99,24 +124,60 @@ export const getField: GetField = (size, startPosition, startNumber, fillTo, fun
     const directions  = functions.getPossibleDirections(currentPosition, field);
     const nextDirection = functions.getNextDesiredDirection(currentDirection, directions);
     const nextPosition = functions.getNextPosition(nextDirection, currentPosition);
-    field[nextPosition.row][nextPosition.column] = currentNumber + 1;
+    const nextNumber = functions.getNextNumber(currentNumber, currentPosition, field);
+    field[nextPosition.row][nextPosition.column] = nextNumber;
     currentPosition = nextPosition;
     currentDirection = nextDirection;
-    currentNumber++;
+    currentNumber = nextNumber;
   }
   return field;
 };
 
-export const getPosition: GetPosition = (number, field) => {
+export const getPosition: GetPosition = (num, field) => {
   for (let row = 0; row < field.length; row ++) {
     for (let column = 0; column < field[row].length; column ++) {
-      if (field[row][column] === number) {
+      if (field[row][column] === num) {
         return { row, column };
       }
     }
   }
-  throw new Error(`number ${number} was not found`);
+  throw new Error(`number ${num} was not found`);
 };
 
 export const getDistance: GetDistance = (first, second) =>
   Math.abs(first.row - second.row) + Math.abs(first.column - second.column);
+
+export const getNextNumber: GetNextNumber = (num, position, field) => num + 1;
+
+export const getFieldSize: GetFieldSize = (input) => {
+  const pureSize = Math.sqrt(input);
+  const margin = 10;
+  // 10 is a safe margin (it helps numbers to not get outside of the field boundaries)
+  const size = Math.round(pureSize) + margin;
+  if (size % 2 !== 0) {
+    return size + 1;
+  }
+  return size;
+};
+
+export const getAnswer: GetAnswer = (input, functions) => {
+  const fieldSize = functions.getFieldSize(input);
+  const startPosition = { row: fieldSize / 2, column: fieldSize / 2 };
+  const field = functions.getField(fieldSize, startPosition, 1, input, functions);
+  const numberPosition = functions.getPosition(input, field);
+  return functions.getDistance(startPosition, numberPosition);
+};
+
+export const day3Part1Factory = (input: number) => {
+  const functions = {
+    getNextPosition,
+    getNextDesiredDirection,
+    getPossibleDirections,
+    getNextNumber,
+    getPosition,
+    getFieldSize,
+    getField,
+    getDistance
+  };
+  return getAnswer(input, functions);
+};
