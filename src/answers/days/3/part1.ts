@@ -1,11 +1,11 @@
 export type Field = Array<Array<number | null>>;
 
-interface Position {
+export interface Position {
   row: number;
   column: number;
 }
 
-interface GetField {
+export interface GetField {
   (
     size: number,
     startPosition: Position,
@@ -27,15 +27,15 @@ export interface PossibleDirections {
   right: boolean;
 }
 
-interface GetNextDesiredDirection {
+export interface GetNextDesiredDirection {
   (previousDirection: string, possibleDirections: PossibleDirections): string;
 }
 
-interface GetPossibleDirections {
+export interface GetPossibleDirections {
   (position: Position, field: Field): PossibleDirections;
 }
 
-interface GetNextPosition {
+export interface GetNextPosition {
   (direction: string, previousPosition: Position): Position;
 }
 
@@ -47,11 +47,11 @@ interface GetDistance {
   (first: Position, second: Position): number;
 }
 
-interface GetNextNumber {
+export interface GetNextNumber {
   (previousNumber: number, position: Position, field: Field): number;
 }
 
-interface GetFieldSize {
+export interface GetFieldSize {
   (input: number): number;
 }
 

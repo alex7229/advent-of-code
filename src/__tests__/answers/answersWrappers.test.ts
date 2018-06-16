@@ -37,4 +37,8 @@ describe('day 3', () => {
     expect(answersWrappers.day3.part1(23)).toBe(2);
     expect(answersWrappers.day3.part1(1024)).toBe(31);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day3.part2(54)).toBe(57);
+    expect(answersWrappers.day3.part2(747)).toBe(806);
+  });
 });
