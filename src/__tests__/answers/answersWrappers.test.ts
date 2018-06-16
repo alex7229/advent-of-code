@@ -42,3 +42,9 @@ describe('day 3', () => {
     expect(answersWrappers.day3.part2(747)).toBe(806);
   });
 });
+
+describe('day 4, part 1', () => {
+  it('part 1', () => {
+    expect(answersWrappers.day4.part1('aa bb cc dd ee\naa bb cc dd aad aa\naa bb cc dd aaa')).toBe(2);
+  });
+});
