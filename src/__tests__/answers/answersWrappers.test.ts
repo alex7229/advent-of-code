@@ -47,4 +47,13 @@ describe('day 4, part 1', () => {
   it('part 1', () => {
     expect(answersWrappers.day4.part1('aa bb cc dd ee\naa bb cc dd aad aa\naa bb cc dd aaa')).toBe(2);
   });
+  it('part 2', () => {
+    const input =
+      'abcde fghij\n' +
+      'abcde xyz ecdab\n' +
+      'a ab abc abd abf abj\n' +
+      'iiii oiii ooii oooi oooo\n' +
+      'oiii ioii iioi iiio';
+    expect(answersWrappers.day4.part2(input)).toBe(3);
+  });
 });

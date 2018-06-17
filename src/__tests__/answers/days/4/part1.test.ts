@@ -1,4 +1,4 @@
-import { countValidPhrases, findWords, isPhraseValid } from '../../../../answers/days/4/part1';
+import { countValidPhrases, findWords, isPhraseValid, isSimilar } from '../../../../answers/days/4/part1';
 
 describe('day 4, part 1', () => {
 
@@ -9,11 +9,18 @@ describe('day 4, part 1', () => {
     });
   });
 
+  describe('is similar function', () => {
+    it('should return true is the words are identical', () => {
+      expect(isSimilar('as', 'as')).toBe(true);
+      expect(isSimilar('aa', 'aaa')).toBe(false);
+    });
+  });
+
   describe('is phrase valid function', () => {
     it('tests from advent of code', () => {
-      expect(isPhraseValid(findWords('aa bb cc dd ee'))).toBe(true);
-      expect(isPhraseValid(findWords('aa bb cc dd aa'))).toBe(false);
-      expect(isPhraseValid(findWords('aa bb cc dd aaa'))).toBe(true);
+      expect(isPhraseValid(findWords('aa bb cc dd ee'), isSimilar)).toBe(true);
+      expect(isPhraseValid(findWords('aa bb cc dd aa'), isSimilar)).toBe(false);
+      expect(isPhraseValid(findWords('aa bb cc dd aaa'), isSimilar)).toBe(true);
     });
   });
 
@@ -23,7 +30,7 @@ describe('day 4, part 1', () => {
       const isPhraseValidMock = jest.fn()
         .mockReturnValueOnce(false)
         .mockReturnValue(true);
-      expect(countValidPhrases('', splitByRows, isPhraseValidMock, findWords)).toBe(2);
+      expect(countValidPhrases('', splitByRows, isPhraseValidMock, findWords, isSimilar)).toBe(2);
       expect(isPhraseValidMock.mock.calls.length).toBe(3);
       expect(isPhraseValidMock.mock.calls[2][0]).toEqual(['ma']);
     });
