@@ -63,4 +63,8 @@ describe('day 5', () => {
     const input = '0\n3\n0\n1\n-3';
     expect(answersWrappers.day5.part1(input)).toBe(5);
   });
+  it('part 2', () => {
+    const input = '0\n3\n0\n1\n-3';
+    expect(answersWrappers.day5.part2(input)).toBe(10);
+  });
 });
