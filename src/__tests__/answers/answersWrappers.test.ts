@@ -43,7 +43,7 @@ describe('day 3', () => {
   });
 });
 
-describe('day 4, part 1', () => {
+describe('day 4', () => {
   it('part 1', () => {
     expect(answersWrappers.day4.part1('aa bb cc dd ee\naa bb cc dd aad aa\naa bb cc dd aaa')).toBe(2);
   });
@@ -55,5 +55,12 @@ describe('day 4, part 1', () => {
       'iiii oiii ooii oooi oooo\n' +
       'oiii ioii iioi iiio';
     expect(answersWrappers.day4.part2(input)).toBe(3);
+  });
+});
+
+describe('day 5', () => {
+  it('part 1', () => {
+    const input = '0\n3\n0\n1\n-3';
+    expect(answersWrappers.day5.part1(input)).toBe(5);
   });
 });
