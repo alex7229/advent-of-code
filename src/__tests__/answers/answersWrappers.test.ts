@@ -1,5 +1,4 @@
 import { answersWrappers } from '../../answers/answersWrappers';
-import { pseudoRandomBytes } from 'crypto';
 
 describe('day 1', () => {
   it('part 1', () => {
@@ -73,5 +72,9 @@ describe('day 6',  () => {
   it('part 1', () => {
     const input = '0\t2\t7\t0';
     expect(answersWrappers.day6.part1(input)).toBe(5);
+  });
+  it('part 2', () => {
+    const input = '0\t2\t7\t0';
+    expect(answersWrappers.day6.part2(input)).toBe(4);
   });
 });
