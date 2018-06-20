@@ -59,22 +59,39 @@ describe('day 4', () => {
 });
 
 describe('day 5', () => {
+  const input = '0\n3\n0\n1\n-3';
   it('part 1', () => {
-    const input = '0\n3\n0\n1\n-3';
     expect(answersWrappers.day5.part1(input)).toBe(5);
   });
   it('part 2', () => {
-    const input = '0\n3\n0\n1\n-3';
     expect(answersWrappers.day5.part2(input)).toBe(10);
   });
 });
 describe('day 6',  () => {
+  const input = '0\t2\t7\t0';
   it('part 1', () => {
-    const input = '0\t2\t7\t0';
     expect(answersWrappers.day6.part1(input)).toBe(5);
   });
   it('part 2', () => {
-    const input = '0\t2\t7\t0';
     expect(answersWrappers.day6.part2(input)).toBe(4);
+  });
+});
+
+describe('day 7',  () => {
+  const input = 'pbga (66)\n' +
+    'xhth (57)\n' +
+    'ebii (61)\n' +
+    'havc (66)\n' +
+    'ktlj (57)\n' +
+    'fwft (72) -> ktlj, cntj, xhth\n' +
+    'qoyq (66)\n' +
+    'padx (45) -> pbga, havc, qoyq\n' +
+    'tknk (41) -> ugml, padx, fwft\n' +
+    'jptl (61)\n' +
+    'ugml (68) -> gyxo, ebii, jptl\n' +
+    'gyxo (61)\n' +
+    'cntj (57)';
+  it('part 1', () => {
+    expect(answersWrappers.day7.part1(input)).toBe('tknk');
   });
 });
