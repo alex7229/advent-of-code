@@ -21,7 +21,7 @@ interface GetInformation {
   (input: string, parseLine: ParseLine, splitByRows: SplitByRows): Information;
 }
 
-interface FindRootTower {
+export interface FindRootTower {
   (information: Information): string;
 }
 

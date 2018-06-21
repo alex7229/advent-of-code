@@ -94,4 +94,7 @@ describe('day 7',  () => {
   it('part 1', () => {
     expect(answersWrappers.day7.part1(input)).toBe('tknk');
   });
+  it('part 2', () => {
+    expect(answersWrappers.day7.part2(input)).toBe(60);
+  });
 });
