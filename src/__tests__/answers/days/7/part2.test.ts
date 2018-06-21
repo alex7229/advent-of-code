@@ -1,7 +1,6 @@
 import { findRootTower, Information } from '../../../../answers/days/7/part1';
 import { findWeight, getBalancedWeight } from '../../../../answers/days/7/part2';
 import * as _ from 'lodash';
-import unmock = jest.unmock;
 
 describe('day 7, part 2', () => {
   describe('find weight function', () => {

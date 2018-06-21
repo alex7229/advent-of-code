@@ -98,3 +98,13 @@ describe('day 7',  () => {
     expect(answersWrappers.day7.part2(input)).toBe(60);
   });
 });
+
+describe('day 8', () => {
+  const input = 'b inc 5 if a > 1\n' +
+    'a inc 1 if b < 5\n' +
+    'c dec -10 if a >= 1\n' +
+    'c inc -20 if c == 10';
+  it('part 1', () => {
+    expect(answersWrappers.day8.part1(input)).toBe(1);
+  });
+});
