@@ -107,4 +107,7 @@ describe('day 8', () => {
   it('part 1', () => {
     expect(answersWrappers.day8.part1(input)).toBe(1);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day8.part2(input)).toBe(10);
+  });
 });

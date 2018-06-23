@@ -17,7 +17,7 @@ export interface Instruction {
   condition: Condition;
 }
 
-interface Registers {
+export interface Registers {
   [key: string]: number;
 }
 
@@ -50,7 +50,11 @@ interface RunInstruction {
   ): void;
 }
 
-interface GetHighestRegisterValue {
+export interface RunInstructionFactory {
+  (instruction: Instruction, registers: Registers): void;
+}
+
+export interface GetHighestRegisterValue {
   (registers: Registers): number;
 }
 
@@ -138,6 +142,9 @@ export const getHighestRegisterValue: GetHighestRegisterValue = registers => {
 export const parseInput: ParseInput = (input, splitByRowsFunc, parseInstructionFunc) =>
   splitByRowsFunc(input)
   .map(row => parseInstructionFunc(row));
+
+export const runInstructionFactory: RunInstructionFactory = (instruction, registers) =>
+  runInstruction(instruction, registers, runAction, checkCondition);
 
 export const day8Part1Factory = (input: string) => {
   const instructions = parseInput(input, splitByRows, parseInstruction);
