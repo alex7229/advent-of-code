@@ -10,33 +10,14 @@ interface CalculateGroupsScore {
 }
 
 export const cleanUpGarbage: CleanUpGarbage = (input) => {
-  let isGarbage = false;
-  let exclamationActive = false;
-  let cleanInput = '';
+  const withoutExceptions = input.replace( /!./g, '');
+  const garbageRegExp = /<[^>]*>/g;
+  let match;
   let score = 0;
-  for (const char of input) {
-    if (!isGarbage) {
-       if (char === '<') {
-         isGarbage = true;
-         continue;
-       }
-       cleanInput += char;
-       continue;
-    }
-    if (exclamationActive) {
-      exclamationActive = false;
-      continue;
-    }
-    if (char === '!') {
-      exclamationActive = true;
-      continue;
-    }
-    if (char === '>') {
-      isGarbage = false;
-      continue;
-    }
-    score++;
+  while ((match = garbageRegExp.exec(withoutExceptions)) !== null) {
+    score += match[0].length - 2;
   }
+  const cleanInput = withoutExceptions.replace(garbageRegExp, '');
   return { cleanInput, score };
 };
 
