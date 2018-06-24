@@ -114,7 +114,24 @@ describe('day 8', () => {
 
 describe('day 9', () => {
   it('part 1', () => {
-    const input = '{{<!!>},{<!!>},{<!!>},{<!!>}}';
-    expect(answersWrappers.day9.part1(input)).toBe(9);
+    const input = '{}' +
+      '{{{}}}' +
+      '{{},{}}' +
+      '{{{},{},{{}}}}' +
+      '{<a>,<a>,<a>,<a>}' +
+      '{{<ab>},{<ab>},{<ab>},{<ab>}}' +
+      '{{<!!>},{<!!>},{<!!>},{<!!>}}' +
+      '{{<a!>},{<a!>},{<a!>},{<ab>}}';
+    expect(answersWrappers.day9.part1(input)).toBe(50);
+  });
+  it('part 2', () => {
+    const input = '<>' +
+      '<random characters>' +
+      '<<<<>' +
+      '<{!>}>' +
+      '<!!>' +
+      '<!!!>>' +
+      '<{o"i!a,<{i<a>';
+    expect(answersWrappers.day9.part2(input)).toBe(32);
   });
 });

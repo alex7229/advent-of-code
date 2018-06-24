@@ -1,5 +1,8 @@
 interface CleanUpGarbage {
-  (input: string): string;
+  (input: string): {
+    cleanInput: string;
+    score: number
+  };
 }
 
 interface CalculateGroupsScore {
@@ -9,14 +12,15 @@ interface CalculateGroupsScore {
 export const cleanUpGarbage: CleanUpGarbage = (input) => {
   let isGarbage = false;
   let exclamationActive = false;
-  let cleanString = '';
+  let cleanInput = '';
+  let score = 0;
   for (const char of input) {
     if (!isGarbage) {
        if (char === '<') {
          isGarbage = true;
          continue;
        }
-       cleanString += char;
+       cleanInput += char;
        continue;
     }
     if (exclamationActive) {
@@ -29,13 +33,15 @@ export const cleanUpGarbage: CleanUpGarbage = (input) => {
     }
     if (char === '>') {
       isGarbage = false;
+      continue;
     }
+    score++;
   }
-  return cleanString;
+  return { cleanInput, score };
 };
 
 export const calculateGroupsScore: CalculateGroupsScore = (input, cleanUpGarbageFunc) => {
-  const cleanInput = cleanUpGarbageFunc(input);
+  const cleanInput = cleanUpGarbageFunc(input).cleanInput;
   let indentationLevel = 0;
   let score = 0;
   for (const char of cleanInput) {
