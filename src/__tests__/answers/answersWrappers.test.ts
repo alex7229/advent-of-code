@@ -111,3 +111,10 @@ describe('day 8', () => {
     expect(answersWrappers.day8.part2(input)).toBe(10);
   });
 });
+
+describe('day 9', () => {
+  it('part 1', () => {
+    const input = '{{<!!>},{<!!>},{<!!>},{<!!>}}';
+    expect(answersWrappers.day9.part1(input)).toBe(9);
+  });
+});
