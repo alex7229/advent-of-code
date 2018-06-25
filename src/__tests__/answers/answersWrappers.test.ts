@@ -135,3 +135,11 @@ describe('day 9', () => {
     expect(answersWrappers.day9.part2(input)).toBe(32);
   });
 });
+
+describe('day 10', () => {
+  it('part 1', () => {
+    const input = '63,144,180,149,1,255,167,84,125,65,188,0,2,254,229,24';
+    // that's an actual solution test
+    expect(answersWrappers.day10.part1(input)).toEqual(4480);
+  });
+});
