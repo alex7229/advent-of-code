@@ -24,14 +24,6 @@ interface GetDenseHash {
   (list: number[], size: number, performXor: PerformXor): number[];
 }
 
-interface Hash64TimesFactory {
-  (list: number[], lengths: number[]): number[];
-}
-
-interface GetDenseHashFactory {
-  (list: number[], size: number): number[];
-}
-
 export const convertToAscii: ConvertToAscii = input =>
   input
     .split('')
@@ -73,17 +65,11 @@ export const getDenseHash: GetDenseHash = (list, size, performXorFunc) => {
   return denseHash;
 };
 
-const hash64TimesFactory: Hash64TimesFactory = (list, lengths) =>
-  hash64Times(list, hashFactory, lengths);
-
-const getDenseHashFactory: GetDenseHashFactory = (list, size) =>
-  getDenseHash(list, size, performXor);
-
 export const day10Part2Factory = (input: string) => {
   const lengths = convertToAscii(input);
   const extendedLengths = addLengths(lengths);
   const list = getList(256);
-  const hashedList = hash64TimesFactory(list, extendedLengths);
-  const denseHash = getDenseHashFactory(hashedList, 16);
+  const hashedList = hash64Times(list, hashFactory, extendedLengths);
+  const denseHash = getDenseHash(hashedList, 16, performXor);
   return convertToHex(denseHash);
 };
