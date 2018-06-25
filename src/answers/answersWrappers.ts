@@ -18,6 +18,7 @@ import { day9Part1Factory } from './days/9/part1';
 import { day9Part2Factory } from './days/9/part2';
 import { day10Part1Factory } from './days/10/part1';
 import { day10Part2Factory } from './days/10/part2';
+import { day11Part1Factory } from './days/11/part1';
 
 export const answersWrappers = {
   day1: {
@@ -59,5 +60,8 @@ export const answersWrappers = {
   day10: {
     part1: day10Part1Factory,
     part2: day10Part2Factory
+  },
+  day11: {
+    part1: day11Part1Factory
   }
 };

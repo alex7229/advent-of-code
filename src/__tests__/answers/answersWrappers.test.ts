@@ -149,3 +149,10 @@ describe('day 10', () => {
     expect(answersWrappers.day10.part2('1,2,4')).toBe('63960835bcdc130f0b66d7ff4f6a5a8e');
   });
 });
+
+describe('day 11', () => {
+  it('part 1', () => {
+    const input = 'ne,ne,sw,sw';
+    expect(answersWrappers.day11.part1(input)).toBe(0);
+  });
+});
