@@ -142,4 +142,10 @@ describe('day 10', () => {
     // that's an actual solution test
     expect(answersWrappers.day10.part1(input)).toEqual(4480);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day10.part2('')).toBe('a2582a3a0e66e6e86e3812dcb672a272');
+    expect(answersWrappers.day10.part2('AoC 2017')).toBe('33efeb34ea91902bb2f59c9920caa6cd');
+    expect(answersWrappers.day10.part2('1,2,3')).toBe('3efbe78a8d82f29979031a4aa0b16a9d');
+    expect(answersWrappers.day10.part2('1,2,4')).toBe('63960835bcdc130f0b66d7ff4f6a5a8e');
+  });
 });

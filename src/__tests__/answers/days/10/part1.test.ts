@@ -48,11 +48,27 @@ describe('day 10, part 1', () => {
   describe('hash function', () => {
     it('should produce correct list with given lengths', () => {
       const lengths = [3, 4, 1, 5];
-      expect(hash(hashExamples[0], reverse, [lengths[0]], getNextPosition)).toEqual(hashExamples[1]);
-      expect(hash(hashExamples[0], reverse, [lengths[0], lengths[1]], getNextPosition)).toEqual(hashExamples[2]);
+      expect(hash(hashExamples[0], reverse, [lengths[0]], getNextPosition, 0, 0).list).toEqual(hashExamples[1]);
+      const lengths2 = [lengths[0], lengths[1]];
+      expect(hash(hashExamples[0], reverse, lengths2, getNextPosition, 0, 0).list).toEqual(hashExamples[2]);
       const length3 = [lengths[0], lengths[1], lengths[2]];
-      expect(hash(hashExamples[0], reverse, length3, getNextPosition)).toEqual(hashExamples[2]);
-      expect(hash(hashExamples[0], reverse, lengths, getNextPosition)).toEqual(hashExamples[3]);
+      expect(hash(hashExamples[0], reverse, length3, getNextPosition, 0, 0).list).toEqual(hashExamples[2]);
+      expect(hash(hashExamples[0], reverse, lengths, getNextPosition, 0, 0).list).toEqual(hashExamples[3]);
+    });
+
+    it('should use provided start skip and start position', () => {
+      const list = [1, 2, 3, 4, 5];
+      const lengths = [3];
+      const skipSize = 5;
+      const position = 2;
+      const reverseFunc = jest.fn()
+        .mockReturnValue(list);
+      const getNextPositionFunc = jest.fn();
+      hash(list, reverseFunc, lengths, getNextPositionFunc, skipSize, position);
+      expect(reverseFunc.mock.calls.length).toBe(1);
+      expect(reverseFunc.mock.calls[0]).toEqual([list, lengths[0], position]);
+      expect(getNextPositionFunc.mock.calls.length).toBe(1);
+      expect(getNextPositionFunc.mock.calls[0]).toEqual([position, skipSize, lengths[0], list]);
     });
   });
 });

@@ -6,15 +6,32 @@ interface GetNextPosition {
   (currentPosition: number, skipSize: number, length: number, list: number[]): number;
 }
 
+export interface HashResult {
+  skip: number;
+  position: number;
+  list: number[];
+}
+
 interface Hash {
-  (list: number[], reverse: Reverse, lengths: number[], getNextPosition: GetNextPosition): number[];
+  (
+    list: number[],
+    reverse: Reverse,
+    lengths: number[],
+    getNextPosition: GetNextPosition,
+    skip: number,
+    position: number
+  ): HashResult;
+}
+
+export interface HashFactory {
+  (list: number[], lengths: number[], skip: number, position: number): HashResult;
 }
 
 interface GetLengths {
   (input: string): number[];
 }
 
-interface GetList {
+export interface GetList {
   (size: number): number[];
 }
 
@@ -41,16 +58,16 @@ export const reverse: Reverse = (list, length, position) => {
 export const getNextPosition: GetNextPosition = (currentPosition, skipSize, length, list) =>
   (currentPosition + skipSize + length) % list.length;
 
-export const hash: Hash = (list, reverseFunc, lengths, getNextPositionFunc) => {
-  let skip = 0;
-  let position = 0;
+export const hash: Hash = (list, reverseFunc, lengths, getNextPositionFunc, skip, position) => {
+  let currentSkip = skip;
+  let currentPosition = position;
   let currentList = [...list];
   for (const length of lengths) {
-    currentList = reverseFunc(currentList, length, position);
-    position = getNextPositionFunc(position, skip, length, currentList);
-    skip++;
+    currentList = reverseFunc(currentList, length, currentPosition);
+    currentPosition = getNextPositionFunc(currentPosition, currentSkip, length, currentList);
+    currentSkip++;
   }
-  return currentList;
+  return { skip: currentSkip, position: currentPosition, list: currentList };
 };
 
 export const getLengths: GetLengths = input => {
@@ -74,9 +91,12 @@ export const getList: GetList = size => {
   return list;
 };
 
+export const hashFactory: HashFactory = (list, lengths, skip, position) =>
+  hash(list, reverse, lengths, getNextPosition, skip, position);
+
 export const day10Part1Factory = (input: string) => {
   const lengths = getLengths(input);
   const list = getList(256);
-  const mixedList = hash(list, reverse, lengths, getNextPosition);
+  const mixedList = hashFactory(list, lengths, 0, 0).list;
   return mixedList[0] * mixedList[1];
 };
