@@ -65,10 +65,10 @@ describe('day 11, part 1', () => {
       simplifyDirections
     };
     it('should count steps correctly', () => {
-      expect(getStepsCount('ne,ne,ne', functions)).toBe(3);
-      expect(getStepsCount('ne,ne,sw,sw', functions)).toBe(0);
-      expect(getStepsCount('ne,ne,s,s', functions)).toBe(2);
-      expect(getStepsCount('se,sw,se,sw,sw', functions)).toBe(3);
+      expect(getStepsCount(['ne', 'ne', 'ne'], functions)).toBe(3);
+      expect(getStepsCount(['ne', 'ne', 'sw', 'sw'], functions)).toBe(0);
+      expect(getStepsCount(['ne', 'ne', 's', 's'], functions)).toBe(2);
+      expect(getStepsCount(['se', 'sw', 'se', 'sw', 'sw'], functions)).toBe(3);
     });
   });
 });

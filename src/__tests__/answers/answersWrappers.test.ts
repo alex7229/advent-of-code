@@ -155,4 +155,8 @@ describe('day 11', () => {
     const input = 'ne,ne,sw,sw';
     expect(answersWrappers.day11.part1(input)).toBe(0);
   });
+  it('part 2', () => {
+    const input = 'ne,ne,sw,sw';
+    expect(answersWrappers.day11.part2(input)).toBe(2);
+  });
 });
