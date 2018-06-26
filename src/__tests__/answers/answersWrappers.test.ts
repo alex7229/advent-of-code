@@ -172,4 +172,7 @@ describe('day 12', () => {
   it('part 1', () => {
     expect(answersWrappers.day12.part1(input)).toEqual(6);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day12.part2(input)).toEqual(2);
+  });
 });

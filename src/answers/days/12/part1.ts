@@ -28,6 +28,10 @@ interface FindAllConnectedPrograms {
   ): number[];
 }
 
+export interface FindAllConnectedProgramsFactory {
+  (ids: number[], programs: Program[]): number[];
+}
+
 export const parseLine: ParseLine = line => {
   const regExp = /(\d+) <-> (.+)/;
   const match = line.match(regExp);
@@ -76,8 +80,11 @@ export const findAllConnectedPrograms: FindAllConnectedPrograms = (
   return childConnections;
 };
 
+export const findAllConnectedProgramsFactory: FindAllConnectedProgramsFactory = (ids, programs) =>
+  findAllConnectedPrograms(ids, programs, findDirectlyConnectedPrograms, _);
+
 export const day12Part1Factory = (input: string) => {
   const programs = splitByRows(input)
     .map(row => parseLine(row));
-  return findAllConnectedPrograms([0], programs, findDirectlyConnectedPrograms, _).length;
+  return findAllConnectedProgramsFactory([0], programs).length;
 };
