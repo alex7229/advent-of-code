@@ -89,17 +89,8 @@ export const simplifyDirectionsFactory: SimplifyDirectionsFactory = directions =
     { directions: ['ne', 's'], substitution: 'se' },
     { directions: ['ne', 'sw'], substitution: null },
     { directions: ['ne', 'nw'], substitution: 'n' },
-    { directions: ['se', 'n'], substitution: 'ne' },
     { directions: ['se', 'nw'], substitution: null },
     { directions: ['se', 'sw'], substitution: 's' },
-    { directions: ['s', 'ne'], substitution: 'se' },
-    { directions: ['s', 'n'], substitution: null },
-    { directions: ['s', 'nw'], substitution: 'sw' },
-    { directions: ['sw', 'n'], substitution: 'nw' },
-    { directions: ['sw', 'ne'], substitution: null },
-    { directions: ['sw', 'se'], substitution: 's' },
-    { directions: ['nw', 'ne'], substitution: 'n' },
-    { directions: ['nw', 'se'], substitution: null },
     { directions: ['nw', 's'], substitution: 'sw' },
   ];
   return simplifyDirections(directions, substitutions, removeDirections);
