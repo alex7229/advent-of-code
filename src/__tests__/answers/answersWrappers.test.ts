@@ -160,3 +160,16 @@ describe('day 11', () => {
     expect(answersWrappers.day11.part2(input)).toBe(2);
   });
 });
+
+describe('day 12', () => {
+  const input = '0 <-> 2\n' +
+    '1 <-> 1\n' +
+    '2 <-> 0, 3, 4\n' +
+    '3 <-> 2, 4\n' +
+    '4 <-> 2, 3, 6\n' +
+    '5 <-> 6\n' +
+    '6 <-> 4, 5';
+  it('part 1', () => {
+    expect(answersWrappers.day12.part1(input)).toEqual(6);
+  });
+});
