@@ -1,17 +1,26 @@
-import { Direction, getStepsCountFactory, GetStepsCountFactory, parseInput } from './part1';
+import {
+  Direction,
+  parseInput,
+  simplifyDirectionsFactory,
+  SimplifyDirectionsFactory
+} from './part1';
 
 interface GetMaxStepsCount {
-  (directions: Direction[], getStepsCount: GetStepsCountFactory): number;
+  (directions: Direction[], simplifyDirections: SimplifyDirectionsFactory): number;
 }
 
-export const getMaxStepsCount: GetMaxStepsCount = (directions, getStepsCount) => {
+export const getMaxStepsCount: GetMaxStepsCount = (directions, simplifyDirections) => {
   let steps: number[] = [];
+  let currentDirections: Direction[] = [];
   for (let i = 0; i < directions.length; i++) {
-    // this can take a while. Around 20 secs on i5 for real input
-    const partialDirections = directions.slice(0, i + 1);
-    steps.push(getStepsCount(partialDirections));
+    currentDirections.push(directions[i]);
+    // possible performance improvement. There is no need to call simplifyDirections function every time
+    // if max steps count was 1400 and current is 1301, next would be at max 1302
+    currentDirections = simplifyDirections(currentDirections);
+    steps.push(currentDirections.length);
   }
   return Math.max(...steps);
 };
 
-export const day11Part2Factory = (input: string) => getMaxStepsCount(parseInput(input), getStepsCountFactory);
+export const day11Part2Factory = (input: string) =>
+  getMaxStepsCount(parseInput(input), simplifyDirectionsFactory);

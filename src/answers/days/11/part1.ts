@@ -24,15 +24,16 @@ interface ParseInput {
 interface GetStepsCount {
   (
     directions: Direction[],
-    functions: {
-      removeDirections: RemoveDirections;
-      simplifyDirections: SimplifyDirections;
-    }
+    simplifyDirections: SimplifyDirectionsFactory
   ): number;
 }
 
 export interface GetStepsCountFactory {
   (directions: Direction[]): number;
+}
+
+export interface SimplifyDirectionsFactory {
+  (directions: Direction[]): Direction[];
 }
 
 export const removeDirections: RemoveDirections = (directions, change) => {
@@ -77,7 +78,10 @@ export const parseInput: ParseInput = input => {
   return directions;
 };
 
-export const getStepsCount: GetStepsCount = (directions, functions) => {
+export const getStepsCount: GetStepsCount = (directions, simplifyDirectionsFunc) =>
+  simplifyDirectionsFunc(directions).length;
+
+export const simplifyDirectionsFactory: SimplifyDirectionsFactory = directions => {
   const substitutions: Substitution[] = [
     { directions: ['n', 's'], substitution: null },
     { directions: ['n', 'se'], substitution: 'ne' },
@@ -98,11 +102,10 @@ export const getStepsCount: GetStepsCount = (directions, functions) => {
     { directions: ['nw', 'se'], substitution: null },
     { directions: ['nw', 's'], substitution: 'sw' },
   ];
-  const simplifiedDirections = functions.simplifyDirections(directions, substitutions, functions.removeDirections);
-  return simplifiedDirections.length;
+  return simplifyDirections(directions, substitutions, removeDirections);
 };
 
 export const getStepsCountFactory: GetStepsCountFactory = directions =>
-  getStepsCount(directions, { removeDirections, simplifyDirections });
+  getStepsCount(directions, simplifyDirectionsFactory);
 
 export const day11Part1Factory = (input: string) => getStepsCountFactory(parseInput(input));

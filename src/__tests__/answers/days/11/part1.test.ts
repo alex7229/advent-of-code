@@ -2,7 +2,7 @@ import {
   Direction, getStepsCount,
   parseInput,
   removeDirections,
-  simplifyDirections,
+  simplifyDirections, simplifyDirectionsFactory,
   Substitution
 } from '../../../../answers/days/11/part1';
 
@@ -59,16 +59,11 @@ describe('day 11, part 1', () => {
   });
 
   describe('get steps count function', () => {
-    const functions = {
-      parseInput,
-      removeDirections,
-      simplifyDirections
-    };
     it('should count steps correctly', () => {
-      expect(getStepsCount(['ne', 'ne', 'ne'], functions)).toBe(3);
-      expect(getStepsCount(['ne', 'ne', 'sw', 'sw'], functions)).toBe(0);
-      expect(getStepsCount(['ne', 'ne', 's', 's'], functions)).toBe(2);
-      expect(getStepsCount(['se', 'sw', 'se', 'sw', 'sw'], functions)).toBe(3);
+      expect(getStepsCount(['ne', 'ne', 'ne'], simplifyDirectionsFactory)).toBe(3);
+      expect(getStepsCount(['ne', 'ne', 'sw', 'sw'], simplifyDirectionsFactory)).toBe(0);
+      expect(getStepsCount(['ne', 'ne', 's', 's'], simplifyDirectionsFactory)).toBe(2);
+      expect(getStepsCount(['se', 'sw', 'se', 'sw', 'sw'], simplifyDirectionsFactory)).toBe(3);
     });
   });
 });
