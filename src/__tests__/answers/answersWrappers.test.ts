@@ -176,3 +176,13 @@ describe('day 12', () => {
     expect(answersWrappers.day12.part2(input)).toEqual(2);
   });
 });
+
+describe('day 13', () => {
+  const input = '0: 3\n' +
+    '1: 2\n' +
+    '4: 4\n' +
+    '6: 4';
+  it('part 1', () => {
+    expect(answersWrappers.day13.part1(input)).toBe(24);
+  });
+});
