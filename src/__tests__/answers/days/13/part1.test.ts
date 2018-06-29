@@ -56,7 +56,16 @@ describe('day 13, part 1', () => {
   });
 
   describe('calculate total severity function', () => {
-    const layers = parseInput('0: 3\n1: 2\n4: 4\n6: 4', splitByRows);
-    expect(calculateTotalSeverity(layers, getMaxDepth, runScanners)).toBe(24);
+    it('should calculate total severity correctly', () => {
+      const layers = parseInput('0: 3\n1: 2\n4: 4\n6: 4', splitByRows);
+      expect(calculateTotalSeverity(layers, getMaxDepth, runScanners).value).toBe(24);
+    });
+    it('should return caught value correctly', () => {
+      const defaultLayers = parseInput('0: 3\n1: 2\n4: 4\n6: 4', splitByRows);
+      const layers = parseInput('0: 3\n1: 5', splitByRows);
+      expect(calculateTotalSeverity(defaultLayers, getMaxDepth, runScanners).isCaught).toBe(true);
+      expect(calculateTotalSeverity(layers, getMaxDepth, runScanners).isCaught).toBe(true);
+      expect(calculateTotalSeverity(runScanners(layers), getMaxDepth, runScanners).isCaught).toBe(false);
+    });
   });
 });

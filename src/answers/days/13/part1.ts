@@ -11,7 +11,7 @@ interface ParseInput {
   (input: string, splitByRows: SplitByRows): Layer[];
 }
 
-interface RunScanners {
+export interface RunScanners {
   (layers: Layer[]): Layer[];
 }
 
@@ -19,12 +19,21 @@ interface GetMaxDepth {
   (layers: Layer[]): number;
 }
 
+interface Severity {
+  isCaught: boolean;
+  value: number;
+}
+
 interface CalculateTotalSeverity {
   (
     layers: Layer[],
     getMaxDepth: GetMaxDepth,
     runScanners: RunScanners
-  ): number;
+  ): Severity;
+}
+
+export interface CalculateTotalSeverityFactory {
+  (layers: Layer[]): Severity;
 }
 
 export const parseInput: ParseInput = (input, splitByRowsFunc) =>
@@ -75,6 +84,7 @@ export const calculateTotalSeverity: CalculateTotalSeverity = (layers, getMaxDep
   const maxDepth = getMaxDepthFunc(layers);
   let nextLayers: Layer[] = layers;
   let totalSeverity = 0;
+  let isCaught = false;
   for (let sec = 0; sec <= maxDepth; sec ++) {
     const currentLayers = nextLayers;
     nextLayers = runScannersFunc(currentLayers);
@@ -82,15 +92,19 @@ export const calculateTotalSeverity: CalculateTotalSeverity = (layers, getMaxDep
     if (currentLayer === undefined) {
       continue;
     }
-    const isCaught = currentLayer.scannerPosition === 0;
-    if (isCaught) {
+    const isCaughtNow = currentLayer.scannerPosition === 0;
+    if (isCaughtNow) {
+      isCaught = true;
       totalSeverity += currentLayer.depth * currentLayer.range;
     }
   }
-  return totalSeverity;
+  return { isCaught, value: totalSeverity };
 };
+
+export const calculateTotalSeverityFactory: CalculateTotalSeverityFactory = layers =>
+  calculateTotalSeverity(layers, getMaxDepth, runScanners);
 
 export const day13Part1Factory = (input: string) => {
   const layers = parseInput(input, splitByRows);
-  return calculateTotalSeverity(layers, getMaxDepth, runScanners);
+  return calculateTotalSeverityFactory(layers).value;
 };

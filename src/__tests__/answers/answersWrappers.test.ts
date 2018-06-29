@@ -185,4 +185,7 @@ describe('day 13', () => {
   it('part 1', () => {
     expect(answersWrappers.day13.part1(input)).toBe(24);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day13.part2(input)).toBe(10);
+  });
 });
