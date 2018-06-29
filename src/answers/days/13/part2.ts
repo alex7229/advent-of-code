@@ -1,6 +1,6 @@
 import {
-  calculateTotalSeverityFactory,
-  CalculateTotalSeverityFactory,
+  isCaughtFactory,
+  IsCaughtFactory,
   Layer,
   parseInput,
   runScanners,
@@ -12,18 +12,18 @@ interface FindLowestDelay {
   (
     layers: Layer[],
     runScanners: RunScanners,
-    calculateTotalSeverity: CalculateTotalSeverityFactory
+    isCaught: IsCaughtFactory
   ): number;
 }
 
 export const findLowestDelay: FindLowestDelay = (
   layers,
   runScannersFunc,
-  calculateTotalSeverity
+  isCaught
   ) => {
   let delay = 0;
   let currentLayers = layers;
-  while (calculateTotalSeverity(currentLayers).isCaught) {
+  while (isCaught(currentLayers)) {
     delay++;
     currentLayers = runScannersFunc(currentLayers);
   }
@@ -31,4 +31,4 @@ export const findLowestDelay: FindLowestDelay = (
 };
 
 export const day13Part2Factory = (input: string) =>
-  findLowestDelay(parseInput(input, splitByRows), runScanners, calculateTotalSeverityFactory);
+  findLowestDelay(parseInput(input, splitByRows), runScanners, isCaughtFactory);

@@ -178,14 +178,14 @@ describe('day 12', () => {
 });
 
 describe('day 13', () => {
-  const input = '0: 3\n' +
-    '1: 2\n' +
-    '4: 4\n' +
-    '6: 4';
+  const input = '0: 3\n1: 2\n4: 4\n6: 4';
   it('part 1', () => {
     expect(answersWrappers.day13.part1(input)).toBe(24);
   });
   it('part 2', () => {
+    // real input. 10k iterations take around 15 secs
+    // now it's 100k for 5 secs. Still not good enough
+    // 3.8mill in 2 mins
     expect(answersWrappers.day13.part2(input)).toBe(10);
   });
 });

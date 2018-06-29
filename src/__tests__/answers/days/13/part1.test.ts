@@ -1,4 +1,10 @@
-import { calculateTotalSeverity, getMaxDepth, Layer, parseInput, runScanners } from '../../../../answers/days/13/part1';
+import {
+  calculateTotalSeverity,
+  getScannerPosition, getScannerPositionFactory, isCaught,
+  Layer,
+  parseInput,
+  runScanners
+} from '../../../../answers/days/13/part1';
 import { splitByRows } from '../../../../utils';
 import * as _ from 'lodash';
 
@@ -45,27 +51,38 @@ describe('day 13, part 1', () => {
     });
   });
 
-  describe('get max depth number function', () => {
-    it('should find max number correctly', () => {
-      const layers: Layer[] = [
-        { depth: 5, range: 1, scannerPosition: 0, scannerDirection: 'down' },
-        { depth: 17, range: 2, scannerPosition: 0, scannerDirection: 'down' }
-      ];
-      expect(getMaxDepth(layers)).toBe(17);
+  describe('get scanner position function', () => {
+    it('should return proper scanner position', () => {
+      const layer: Layer = {
+        depth: 0,
+        range: 3,
+        scannerPosition: 0,
+        scannerDirection: 'down'
+      };
+      const runScannersMock = jest.fn()
+        .mockReturnValueOnce([{ ...layer, scannerPosition: 17 }])
+        .mockReturnValueOnce([{ ...layer, scannerPosition: 25 }]);
+      expect(getScannerPosition(layer, 0, runScannersMock)).toBe(0);
+      expect(runScannersMock.mock.calls.length).toBe(0);
+      expect(getScannerPosition(layer, 2, runScannersMock)).toBe(25);
+      expect(runScannersMock.mock.calls.length).toBe(2);
     });
   });
 
   describe('calculate total severity function', () => {
     it('should calculate total severity correctly', () => {
       const layers = parseInput('0: 3\n1: 2\n4: 4\n6: 4', splitByRows);
-      expect(calculateTotalSeverity(layers, getMaxDepth, runScanners).value).toBe(24);
+      expect(calculateTotalSeverity(layers, getScannerPositionFactory)).toBe(24);
     });
+  });
+
+  describe('is caught function', () => {
     it('should return caught value correctly', () => {
       const defaultLayers = parseInput('0: 3\n1: 2\n4: 4\n6: 4', splitByRows);
       const layers = parseInput('0: 3\n1: 5', splitByRows);
-      expect(calculateTotalSeverity(defaultLayers, getMaxDepth, runScanners).isCaught).toBe(true);
-      expect(calculateTotalSeverity(layers, getMaxDepth, runScanners).isCaught).toBe(true);
-      expect(calculateTotalSeverity(runScanners(layers), getMaxDepth, runScanners).isCaught).toBe(false);
+      expect(isCaught(defaultLayers, getScannerPositionFactory)).toBe(true);
+      expect(isCaught(layers, getScannerPositionFactory)).toBe(true);
+      expect(isCaught(runScanners(layers), getScannerPositionFactory)).toBe(false);
     });
   });
 });

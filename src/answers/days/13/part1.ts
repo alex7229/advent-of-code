@@ -15,25 +15,31 @@ export interface RunScanners {
   (layers: Layer[]): Layer[];
 }
 
-interface GetMaxDepth {
-  (layers: Layer[]): number;
+export interface GetScannerPosition {
+  (layer: Layer, delay: number, runScanners: RunScanners): number;
 }
 
-interface Severity {
-  isCaught: boolean;
-  value: number;
+export interface GetScannerPositionFactory {
+  (layer: Layer, delay: number): number;
+}
+
+interface IsCaught {
+  (layers: Layer[], getScannerPosition: GetScannerPositionFactory): boolean;
+}
+
+export interface IsCaughtFactory {
+  (layers: Layer[]): boolean;
 }
 
 interface CalculateTotalSeverity {
   (
     layers: Layer[],
-    getMaxDepth: GetMaxDepth,
-    runScanners: RunScanners
-  ): Severity;
+    getScannerPosition: GetScannerPositionFactory
+  ): number;
 }
 
 export interface CalculateTotalSeverityFactory {
-  (layers: Layer[]): Severity;
+  (layers: Layer[]): number;
 }
 
 export const parseInput: ParseInput = (input, splitByRowsFunc) =>
@@ -75,36 +81,32 @@ export const runScanners: RunScanners = layers =>
     return { ...layer, scannerPosition: nextPosition, scannerDirection: nextDirection };
   });
 
-export const getMaxDepth: GetMaxDepth = layers => {
-  const depths = layers.map((layer) => layer.depth);
-  return Math.max(...depths);
+export const getScannerPosition: GetScannerPosition = (layer, delay, runScannersFunc) => {
+  let currentLayer: Layer = layer;
+  for (let sec = 0; sec < delay; sec++) {
+    currentLayer = runScannersFunc([currentLayer])[0];
+  }
+  return currentLayer.scannerPosition;
 };
 
-export const calculateTotalSeverity: CalculateTotalSeverity = (layers, getMaxDepthFunc, runScannersFunc) => {
-  const maxDepth = getMaxDepthFunc(layers);
-  let nextLayers: Layer[] = layers;
-  let totalSeverity = 0;
-  let isCaught = false;
-  for (let sec = 0; sec <= maxDepth; sec ++) {
-    const currentLayers = nextLayers;
-    nextLayers = runScannersFunc(currentLayers);
-    const currentLayer = currentLayers.find(layer => layer.depth === sec);
-    if (currentLayer === undefined) {
-      continue;
-    }
-    const isCaughtNow = currentLayer.scannerPosition === 0;
-    if (isCaughtNow) {
-      isCaught = true;
-      totalSeverity += currentLayer.depth * currentLayer.range;
-    }
-  }
-  return { isCaught, value: totalSeverity };
-};
+export const calculateTotalSeverity: CalculateTotalSeverity = (layers, getScannerPositionFunc) =>
+  layers
+    .filter(layer => getScannerPositionFunc(layer, layer.depth) === 0)
+    .reduce((totalSeverity, currentLayer) => totalSeverity += (currentLayer.depth * currentLayer.range), 0);
+
+export const isCaught: IsCaught = (layers, getScannerPositionFunc) =>
+  !!layers.find(layer => getScannerPositionFunc(layer, layer.depth) === 0);
+
+export const getScannerPositionFactory: GetScannerPositionFactory = (layer, delay) =>
+  getScannerPosition(layer, delay, runScanners);
+
+export const isCaughtFactory: IsCaughtFactory = layers =>
+  isCaught(layers, getScannerPositionFactory);
 
 export const calculateTotalSeverityFactory: CalculateTotalSeverityFactory = layers =>
-  calculateTotalSeverity(layers, getMaxDepth, runScanners);
+  calculateTotalSeverity(layers, getScannerPositionFactory);
 
 export const day13Part1Factory = (input: string) => {
   const layers = parseInput(input, splitByRows);
-  return calculateTotalSeverityFactory(layers).value;
+  return calculateTotalSeverityFactory(layers);
 };

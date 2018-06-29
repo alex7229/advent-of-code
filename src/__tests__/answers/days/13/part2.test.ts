@@ -1,4 +1,8 @@
-import { calculateTotalSeverityFactory, parseInput, runScanners } from '../../../../answers/days/13/part1';
+import {
+  isCaughtFactory,
+  parseInput,
+  runScanners
+} from '../../../../answers/days/13/part1';
 import { splitByRows } from '../../../../utils';
 import * as _ from 'lodash';
 import { findLowestDelay } from '../../../../answers/days/13/part2';
@@ -10,7 +14,7 @@ describe('day 13, part 2', () => {
   describe('find lowest delay function', () => {
     it('should find the delay correctly', () => {
       const layers = _.cloneDeep(defaultLayers);
-      expect(findLowestDelay(layers, runScanners, calculateTotalSeverityFactory)).toBe(10);
+      expect(findLowestDelay(layers, runScanners, isCaughtFactory)).toBe(10);
     });
   });
 });
