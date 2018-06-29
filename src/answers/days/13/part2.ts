@@ -2,33 +2,24 @@ import {
   isCaughtFactory,
   IsCaughtFactory,
   Layer,
-  parseInput,
-  runScanners,
-  RunScanners
+  parseInput
 } from './part1';
 import { splitByRows } from '../../../utils';
 
 interface FindLowestDelay {
   (
     layers: Layer[],
-    runScanners: RunScanners,
     isCaught: IsCaughtFactory
   ): number;
 }
 
-export const findLowestDelay: FindLowestDelay = (
-  layers,
-  runScannersFunc,
-  isCaught
-  ) => {
+export const findLowestDelay: FindLowestDelay = (layers, isCaught) => {
   let delay = 0;
-  let currentLayers = layers;
-  while (isCaught(currentLayers)) {
+  while (isCaught(layers, delay)) {
     delay++;
-    currentLayers = runScannersFunc(currentLayers);
   }
   return delay;
 };
 
 export const day13Part2Factory = (input: string) =>
-  findLowestDelay(parseInput(input, splitByRows), runScanners, isCaughtFactory);
+  findLowestDelay(parseInput(input, splitByRows), isCaughtFactory);

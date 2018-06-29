@@ -183,9 +183,6 @@ describe('day 13', () => {
     expect(answersWrappers.day13.part1(input)).toBe(24);
   });
   it('part 2', () => {
-    // real input. 10k iterations take around 15 secs
-    // now it's 100k for 5 secs. Still not good enough
-    // 3.8mill in 2 mins
     expect(answersWrappers.day13.part2(input)).toBe(10);
   });
 });

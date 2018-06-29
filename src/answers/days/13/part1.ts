@@ -3,8 +3,6 @@ import { splitByRows, SplitByRows } from '../../../utils';
 export interface Layer {
   depth: number;
   range: number;
-  scannerPosition: number;
-  scannerDirection: 'up' | 'down';
 }
 
 interface ParseInput {
@@ -16,25 +14,21 @@ export interface RunScanners {
 }
 
 export interface GetScannerPosition {
-  (layer: Layer, delay: number, runScanners: RunScanners): number;
-}
-
-export interface GetScannerPositionFactory {
   (layer: Layer, delay: number): number;
 }
 
 interface IsCaught {
-  (layers: Layer[], getScannerPosition: GetScannerPositionFactory): boolean;
+  (layers: Layer[], delay: number, getScannerPosition: GetScannerPosition): boolean;
 }
 
 export interface IsCaughtFactory {
-  (layers: Layer[]): boolean;
+  (layers: Layer[], delay: number): boolean;
 }
 
 interface CalculateTotalSeverity {
   (
     layers: Layer[],
-    getScannerPosition: GetScannerPositionFactory
+    getScannerPosition: GetScannerPosition
   ): number;
 }
 
@@ -48,9 +42,7 @@ export const parseInput: ParseInput = (input, splitByRowsFunc) =>
       const [depthString, rangeString] = row.split(': ');
       const layer: Layer = {
         range: parseInt(rangeString, 10),
-        depth:  parseInt(depthString, 10),
-        scannerPosition: 0,
-        scannerDirection: 'down'
+        depth:  parseInt(depthString, 10)
       };
       if (Number.isNaN(layer.depth) || Number.isNaN(layer.range)) {
         throw new Error('input in incorrect');
@@ -58,35 +50,22 @@ export const parseInput: ParseInput = (input, splitByRowsFunc) =>
       return layer;
     });
 
-export const runScanners: RunScanners = layers =>
-  layers.map(layer => {
-    // the direction doesn't matter for small layers (1 or 2 range)
-    if (layer.range === 1) {
-      return { ...layer };
-    }
-    if (layer.range === 2) {
-      return { ...layer, scannerPosition: layer.scannerPosition === 0 ? 1 : 0 };
-    }
-    let nextPosition = layer.scannerDirection === 'down' ? layer.scannerPosition + 1 : layer.scannerPosition - 1;
-    let nextDirection = layer.scannerDirection;
-    if (nextPosition < 0) {
-      // it was out of bounds and moved in wrong direction. Change direction and place scanner at 1-st pos
-      nextPosition = 1;
-      nextDirection = 'down';
-    }
-    if (nextPosition + 1 === layer.range) {
-      // it would be out of bounds the next turn so direction is changed now
-      nextDirection = 'up';
-    }
-    return { ...layer, scannerPosition: nextPosition, scannerDirection: nextDirection };
-  });
-
-export const getScannerPosition: GetScannerPosition = (layer, delay, runScannersFunc) => {
-  let currentLayer: Layer = layer;
-  for (let sec = 0; sec < delay; sec++) {
-    currentLayer = runScannersFunc([currentLayer])[0];
+export const getScannerPosition: GetScannerPosition = (layer, delay) => {
+  if (layer.range === 1) {
+    return 0;
   }
-  return currentLayer.scannerPosition;
+  if (delay < layer.range) {
+    return delay;
+  }
+  const cycleLength = layer.range - 1;
+  const currentCyclePosition = delay % cycleLength;
+  const fullCycles = Math.floor(delay / cycleLength);
+  const isOdd = fullCycles % 2 === 1;
+  // if full cycles number is odd -> scanner is moving up
+  if (isOdd) {
+    return cycleLength - currentCyclePosition;
+  }
+  return currentCyclePosition;
 };
 
 export const calculateTotalSeverity: CalculateTotalSeverity = (layers, getScannerPositionFunc) =>
@@ -94,17 +73,14 @@ export const calculateTotalSeverity: CalculateTotalSeverity = (layers, getScanne
     .filter(layer => getScannerPositionFunc(layer, layer.depth) === 0)
     .reduce((totalSeverity, currentLayer) => totalSeverity += (currentLayer.depth * currentLayer.range), 0);
 
-export const isCaught: IsCaught = (layers, getScannerPositionFunc) =>
-  !!layers.find(layer => getScannerPositionFunc(layer, layer.depth) === 0);
+export const isCaught: IsCaught = (layers, delay, getScannerPositionFunc) =>
+  !!layers.find(layer => getScannerPositionFunc(layer, delay + layer.depth) === 0);
 
-export const getScannerPositionFactory: GetScannerPositionFactory = (layer, delay) =>
-  getScannerPosition(layer, delay, runScanners);
-
-export const isCaughtFactory: IsCaughtFactory = layers =>
-  isCaught(layers, getScannerPositionFactory);
+export const isCaughtFactory: IsCaughtFactory = (layers, delay) =>
+  isCaught(layers, delay, getScannerPosition);
 
 export const calculateTotalSeverityFactory: CalculateTotalSeverityFactory = layers =>
-  calculateTotalSeverity(layers, getScannerPositionFactory);
+  calculateTotalSeverity(layers, getScannerPosition);
 
 export const day13Part1Factory = (input: string) => {
   const layers = parseInput(input, splitByRows);
