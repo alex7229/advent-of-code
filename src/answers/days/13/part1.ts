@@ -9,10 +9,6 @@ interface ParseInput {
   (input: string, splitByRows: SplitByRows): Layer[];
 }
 
-export interface RunScanners {
-  (layers: Layer[]): Layer[];
-}
-
 export interface GetScannerPosition {
   (layer: Layer, delay: number): number;
 }

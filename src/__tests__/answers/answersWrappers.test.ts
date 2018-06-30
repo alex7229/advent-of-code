@@ -186,3 +186,10 @@ describe('day 13', () => {
     expect(answersWrappers.day13.part2(input)).toBe(10);
   });
 });
+
+describe('day 14', () => {
+  const input = 'flqrgnkx';
+  it('part 1', () => {
+    expect(answersWrappers.day14.part1(input)).toBe(8108);
+  });
+});
