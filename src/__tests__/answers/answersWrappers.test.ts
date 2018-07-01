@@ -192,4 +192,7 @@ describe('day 14', () => {
   it('part 1', () => {
     expect(answersWrappers.day14.part1(input)).toBe(8108);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day14.part2(input)).toBe(1242);
+  });
 });
