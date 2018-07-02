@@ -52,10 +52,17 @@ describe('day 15, part 1', () => {
   describe('get matches number function', () => {
     it('should calculate matches number correctly', () => {
       const generators: Generators = {
+        A: { startNumber: 65, multiplier: 16807 },
+        B: { startNumber: 8921, multiplier: 48271 }
+      };
+      expect(getMatchesNumber(generators, 5, compareNumbers, getNextNumber)).toBe(1);
+    });
+    it('should throw if multipliers are not defined', () => {
+      const generators: Generators = {
         A: { startNumber: 65 },
         B: { startNumber: 8921 }
       };
-      expect(getMatchesNumber(generators, 5, compareNumbers, getNextNumber)).toBe(1);
+      expect(() => getMatchesNumber(generators, 5, compareNumbers, getNextNumber)).toThrow();
     });
   });
 

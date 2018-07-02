@@ -1,10 +1,10 @@
-interface GetNextNumber {
-  (previousNumber: number, multiplier: number): number;
+export interface GetNextNumber {
+  (previousNumber: number, multiplier: number, divisor?: number): number;
 }
 
 export interface Generators {
-  A: { startNumber: number };
-  B: { startNumber: number };
+  A: { startNumber: number, multiplier?: number, divisor?: number };
+  B: { startNumber: number, multiplier?: number, divisor?: number };
 }
 
 interface ParseInput {
@@ -57,6 +57,9 @@ export const getMatchesNumber: GetMatchesNumber = (
   compareNumbersFunc,
   getNextNumberFunc
 ) => {
+  if (generators.A.multiplier === undefined || generators.B.multiplier === undefined) {
+    throw new Error('multipliers should be defined');
+  }
   let firstNumber = generators.A.startNumber;
   let secondNumber = generators.B.startNumber;
   let matchesNumber = 0;
@@ -64,8 +67,8 @@ export const getMatchesNumber: GetMatchesNumber = (
     matchesNumber++;
   }
   for (let i = 0; i < sequenceLength; i++) {
-    firstNumber = getNextNumberFunc(firstNumber, 16807);
-    secondNumber = getNextNumberFunc(secondNumber, 48271);
+    firstNumber = getNextNumberFunc(firstNumber, generators.A.multiplier, generators.A.divisor);
+    secondNumber = getNextNumberFunc(secondNumber, generators.B.multiplier, generators.B.divisor);
     if (compareNumbersFunc(firstNumber, secondNumber)) {
       matchesNumber++;
     }
@@ -73,7 +76,9 @@ export const getMatchesNumber: GetMatchesNumber = (
   return matchesNumber;
 };
 
-export const day15Part1Factory = (input: string) => {
+export const day15Part1Factory = (input: string, sequenceLength = 4 * 10 ** 7) => {
   const generators = parseInput(input);
-  return getMatchesNumber(generators, 4 * 10 ** 7, compareNumbers, getNextNumber);
+  generators.A.multiplier = 16807;
+  generators.B.multiplier = 48271;
+  return getMatchesNumber(generators, sequenceLength, compareNumbers, getNextNumber);
 };

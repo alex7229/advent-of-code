@@ -202,6 +202,11 @@ describe('day 15', () => {
     'Generator A starts with 65\n' +
     'Generator B starts with 8921';
   it('part 1', () => {
-    expect(answersWrappers.day15.part1(input)).toBe(588);
+    expect(answersWrappers.day15.part1(input, 2)).toBe(0);
+    expect(answersWrappers.day15.part1(input, 3)).toBe(1);
+  });
+  it('part 2', () => {
+    expect(answersWrappers.day15.part2(input, 1055)).toBe(0);
+    expect(answersWrappers.day15.part2(input, 1056)).toBe(1);
   });
 });
