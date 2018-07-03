@@ -29,6 +29,7 @@ import { day14Part2Factory } from './days/14/part2';
 import { day15Part1Factory } from './days/15/part1';
 import { day15Part2Factory } from './days/15/part2';
 import { day16Part1Factory } from './days/16/part1';
+import { day16Part2Factory } from './days/16/part2';
 
 export const answersWrappers = {
   day1: {
@@ -92,6 +93,7 @@ export const answersWrappers = {
     part2: day15Part2Factory
   },
   day16: {
-    part1: day16Part1Factory
+    part1: day16Part1Factory,
+    part2: day16Part2Factory
   }
 };

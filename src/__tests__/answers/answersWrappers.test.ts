@@ -216,4 +216,8 @@ describe('day 16', () => {
   it('part 1', () => {
     expect(answersWrappers.day16.part1(moves, 'abcde')).toBe('baedc');
   });
+  it('part 2', () => {
+    // that's not a mistake. The positions are the same after one billion dances as after first one
+    expect(answersWrappers.day16.part2(moves, 'abcde')).toBe('baedc');
+  });
 });

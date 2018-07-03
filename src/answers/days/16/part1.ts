@@ -40,6 +40,10 @@ interface PerformDance {
   ): string;
 }
 
+export interface PerformDanceFactory {
+  (positions: string, moves: DanceMove[]): string;
+}
+
 export const getDanceMoves: GetDanceMoves = input =>
   input
     .split(',')
@@ -127,12 +131,14 @@ export const performDance: PerformDance = (positions, moves, functions) => {
   return currentPositions;
 };
 
-export const day16Part1Factory = (input: string, positions = 'abcdefghijklmnop') => {
-  const moves = getDanceMoves(input);
-  const functions = {
+export const performDanceFactory: PerformDanceFactory = (positions, moves) =>
+  performDance(positions, moves, {
     spin: performSpin,
     partner: performPartner,
     exchange: performExchange
-  };
-  return performDance(positions, moves, functions);
+  });
+
+export const day16Part1Factory = (input: string, positions = 'abcdefghijklmnop') => {
+  const moves = getDanceMoves(input);
+  return performDanceFactory(positions, moves);
 };
