@@ -210,3 +210,10 @@ describe('day 15', () => {
     expect(answersWrappers.day15.part2(input, 1056)).toBe(1);
   });
 });
+
+describe('day 16', () => {
+  const moves = 's1,x3/4,pe/b';
+  it('part 1', () => {
+    expect(answersWrappers.day16.part1(moves, 'abcde')).toBe('baedc');
+  });
+});
