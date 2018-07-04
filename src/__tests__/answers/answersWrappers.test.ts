@@ -221,3 +221,20 @@ describe('day 16', () => {
     expect(answersWrappers.day16.part2(moves, 'abcde')).toBe('baedc');
   });
 });
+
+describe('day 17', () => {
+  const input =
+    'set a 1\n' +
+    'add a 2\n' +
+    'mul a a\n' +
+    'mod a 5\n' +
+    'snd a\n' +
+    'set a 0\n' +
+    'rcv a\n' +
+    'jgz a -1\n' +
+    'set a 1\n' +
+    'jgz a -2';
+  it('part 1', () => {
+    expect(answersWrappers.day17.part1(input)).toBe(4);
+  });
+});
