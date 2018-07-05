@@ -1,8 +1,8 @@
-import { countSendValues, DuetMulti } from '../../../../answers/days/17/part2';
-import { generateRegisters, Instruction, parseInstructions } from '../../../../answers/days/17/part1';
+import { countSendValues, DuetMulti } from '../../../../answers/days/18/part2';
+import { generateRegisters, Instruction, parseInstructions } from '../../../../answers/days/18/part1';
 import { splitByRows } from '../../../../utils';
 
-describe('day 17, part 2', () => {
+describe('day 18, part 2', () => {
 
   const getDuet = () => new DuetMulti(generateRegisters(), []);
 

@@ -222,7 +222,7 @@ describe('day 16', () => {
   });
 });
 
-describe('day 17', () => {
+describe('day 18', () => {
   it('part 1', () => {
     const input =
       'set a 1\n' +
@@ -235,7 +235,7 @@ describe('day 17', () => {
       'jgz a -1\n' +
       'set a 1\n' +
       'jgz a -2';
-    expect(answersWrappers.day17.part1(input)).toBe(4);
+    expect(answersWrappers.day18.part1(input)).toBe(4);
   });
   it('part 2', () => {
     const input = 'snd 1\n' +
@@ -245,6 +245,6 @@ describe('day 17', () => {
       'rcv b\n' +
       'rcv c\n' +
       'rcv d';
-    expect(answersWrappers.day17.part2(input)).toBe(3);
+    expect(answersWrappers.day18.part2(input)).toBe(3);
   });
 });

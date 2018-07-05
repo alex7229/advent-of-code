@@ -146,7 +146,7 @@ export class Duet {
   }
 }
 
-export const day17Part1Factory = (input: string) => {
+export const day18Part1Factory = (input: string) => {
   const instructions = parseInstructions(input, splitByRows);
   const registers = generateRegisters();
   const duet = new Duet(registers, instructions);

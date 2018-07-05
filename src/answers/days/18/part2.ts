@@ -56,7 +56,7 @@ export const countSendValues: CountSendValues = (first, second) => {
   return totalSendNumber;
 };
 
-export const day17Part2Factory = (input: string) => {
+export const day18Part2Factory = (input: string) => {
   const instructions = parseInstructions(input, splitByRows);
   const firstProgramRegisters = generateRegisters();
   let secondProgramRegisters = generateRegisters();

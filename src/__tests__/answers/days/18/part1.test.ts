@@ -3,10 +3,10 @@ import {
   generateRegisters,
   Instruction,
   parseInstructions
-} from '../../../../answers/days/17/part1';
+} from '../../../../answers/days/18/part1';
 import { splitByRows } from '../../../../utils';
 
-describe('day 17, part 1', () => {
+describe('day 18, part 1', () => {
   describe('generate registers function', () => {
     it('should generate correct default registers', () => {
       const registers = generateRegisters();
