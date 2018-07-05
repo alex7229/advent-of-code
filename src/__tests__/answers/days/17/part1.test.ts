@@ -41,11 +41,13 @@ describe('day 17, part 1', () => {
 
     const getDuet = () => new Duet(generateRegisters(), []);
 
-    it('run instruction should throw if instruction index is out of bounds', () => {
+    it('run instruction should trigger deadlock if instruction index is out of bounds', () => {
       const duet = getDuet();
       duet.instructions = [{ type: 'set', values: ['a', 3] }];
       duet.currentInstructionIndex = 23;
-      expect(() => duet.runInstruction()).toThrow();
+      duet.runInstruction();
+      expect(duet.deadLock).toBe(true);
+      expect(duet.currentInstructionIndex).toBe(23);
     });
     it('snd should save its frequency', () => {
       const duet = getDuet();
@@ -56,7 +58,7 @@ describe('day 17, part 1', () => {
       expect(duet.lastSoundFrequency).toBe(17);
     });
 
-    describe('recovery instruction', () => {
+    describe('rcv instruction', () => {
       it('should throw if no sound was played', () => {
         const duet = getDuet();
         duet.instructions = [{ type: 'rcv', values: ['a', null]} ];
@@ -77,6 +79,11 @@ describe('day 17, part 1', () => {
         duet.registers.a = 22;
         duet.runInstruction();
         expect(duet.recoveredSound).toBe(23);
+      });
+      it('should throw if value is a number', () => {
+        const duet = getDuet();
+        duet.instructions = [{ type: 'rcv', values: [2, null] }];
+        expect(() => duet.runInstruction()).toThrow();
       });
     });
 

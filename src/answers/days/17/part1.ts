@@ -1,6 +1,6 @@
 import { splitByRows, SplitByRows } from '../../../utils';
 
-interface Registers {
+export interface Registers {
   [key: string]: number;
 }
 
@@ -50,6 +50,7 @@ export class Duet {
   currentInstructionIndex: number = 0;
   lastSoundFrequency: number;
   recoveredSound: number;
+  deadLock = false;
 
   constructor(registers: Registers, instructions: Instruction[]) {
     this.registers = registers;
@@ -64,7 +65,8 @@ export class Duet {
     this.currentInstructionIndex++;
   }
 
-  recovery(condition: number) {
+  rcv(registerName: string) {
+    const condition = this.registers[registerName];
     if (condition === 0) {
       this.currentInstructionIndex++;
       return;
@@ -76,10 +78,16 @@ export class Duet {
     this.currentInstructionIndex++;
   }
 
+  snd(value: number) {
+    this.lastSoundFrequency = value;
+    this.currentInstructionIndex++;
+  }
+
   runInstruction() {
     const currentInstruction = this.instructions[this.currentInstructionIndex];
     if (currentInstruction === undefined) {
-      throw new Error('out of bounds');
+      this.deadLock = true;
+      return;
     }
     const firstStatement = currentInstruction.values[0];
     const secondStatement = currentInstruction.values[1];
@@ -98,11 +106,13 @@ export class Duet {
       secondValue = this.registers[secondStatement];
     }
     if (currentInstruction.type === 'snd') {
-      this.lastSoundFrequency = this.registers[currentInstruction.values[0]];
-      this.currentInstructionIndex++;
+      this.snd(firstValue);
     }
     if (currentInstruction.type === 'rcv') {
-      this.recovery(firstValue);
+      if (typeof firstStatement !== 'string') {
+        throw new Error('rcv value should be a string');
+      }
+      this.rcv(firstStatement);
     }
     if (currentInstruction.type === 'jgz') {
       this.jump(firstValue, secondValue);

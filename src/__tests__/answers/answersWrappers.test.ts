@@ -223,18 +223,28 @@ describe('day 16', () => {
 });
 
 describe('day 17', () => {
-  const input =
-    'set a 1\n' +
-    'add a 2\n' +
-    'mul a a\n' +
-    'mod a 5\n' +
-    'snd a\n' +
-    'set a 0\n' +
-    'rcv a\n' +
-    'jgz a -1\n' +
-    'set a 1\n' +
-    'jgz a -2';
   it('part 1', () => {
+    const input =
+      'set a 1\n' +
+      'add a 2\n' +
+      'mul a a\n' +
+      'mod a 5\n' +
+      'snd a\n' +
+      'set a 0\n' +
+      'rcv a\n' +
+      'jgz a -1\n' +
+      'set a 1\n' +
+      'jgz a -2';
     expect(answersWrappers.day17.part1(input)).toBe(4);
+  });
+  it('part 2', () => {
+    const input = 'snd 1\n' +
+      'snd 2\n' +
+      'snd p\n' +
+      'rcv a\n' +
+      'rcv b\n' +
+      'rcv c\n' +
+      'rcv d';
+    expect(answersWrappers.day17.part2(input)).toBe(3);
   });
 });
