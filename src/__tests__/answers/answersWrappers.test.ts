@@ -222,6 +222,13 @@ describe('day 16', () => {
   });
 });
 
+describe('day 17', () => {
+  const input = '367';
+  it('part 1', () => {
+    expect(answersWrappers.day17.part1(input)).toBe(1487);
+  });
+});
+
 describe('day 18', () => {
   it('part 1', () => {
     const input =
