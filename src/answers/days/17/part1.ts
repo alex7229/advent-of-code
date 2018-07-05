@@ -12,10 +12,13 @@ interface FindNextDirectNumber {
 }
 
 export const insert: Insert = (buffer, stepLength) => {
-  const bufferValues = [...buffer.values];
+  let bufferValues = [...buffer.values];
   let nextPosition = buffer.position + stepLength + 1;
   if (nextPosition >= bufferValues.length) {
     nextPosition = nextPosition % bufferValues.length;
+  }
+  if (nextPosition === 0) {
+    nextPosition = bufferValues.length;
   }
   const maxNumber = Math.max(...bufferValues);
   bufferValues.splice(nextPosition, 0, maxNumber + 1);
