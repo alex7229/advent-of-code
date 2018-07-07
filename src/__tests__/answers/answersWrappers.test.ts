@@ -227,6 +227,9 @@ describe('day 17', () => {
   it('part 1', () => {
     expect(answersWrappers.day17.part1(input)).toBe(1487);
   });
+  it('part 2', () => {
+    expect(answersWrappers.day17.part2(input, 2017)).toBe(932);
+  });
 });
 
 describe('day 18', () => {
