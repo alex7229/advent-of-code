@@ -258,3 +258,17 @@ describe('day 18', () => {
     expect(answersWrappers.day18.part2(input)).toBe(3);
   });
 });
+
+describe('day 19', () => {
+  const input =
+    '     |          \n' +
+    '     |  +--+    \n' +
+    '     A  |  C    \n' +
+    ' F---|----E|--+ \n' +
+    '     |  |  |  D \n' +
+    '     +B-+  +--+ \n';
+  it('part 1', () => {
+    expect(answersWrappers.day19.part1(input)).toBe('ABCDEF');
+  });
+
+});
