@@ -8,11 +8,13 @@ describe('day19, part 1', () => {
       const input =
         '     |          \n' +
         '     |  +--+    \n';
-      expect(findStartPosition(splitByRows(input))).toEqual({ row: 0, column: 5 });
+      const cells = splitByRows(input)
+        .map(line => line.split(''));
+      expect(findStartPosition(cells)).toEqual({ row: 0, column: 5 });
     });
     it(`should throw if lines number is 0 or top line doesn't have '|' char`, () => {
       expect(() => findStartPosition([])).toThrow();
-      expect(() => findStartPosition(['dsf'])).toThrow();
+      expect(() => findStartPosition([['d'], ['s'], ['f']])).toThrow();
     });
   });
 

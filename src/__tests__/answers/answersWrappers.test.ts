@@ -270,5 +270,7 @@ describe('day 19', () => {
   it('part 1', () => {
     expect(answersWrappers.day19.part1(input)).toBe('ABCDEF');
   });
-
+  it('part 2', () => {
+    expect(answersWrappers.day19.part2(input)).toBe(38);
+  });
 });

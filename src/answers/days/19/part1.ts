@@ -1,15 +1,15 @@
 import { Position } from '../3/part1';
 import { splitByRows } from '../../../utils';
 
-interface FindStartPosition {
-  (lines: string[]): Position;
+export interface FindStartPosition {
+  (lines: string[][]): Position;
 }
 
-interface FindLetters {
+export interface FindLetters {
   (lines: string[][], startPosition: Position, getNextCellPosition: GetNextCellPosition): string;
 }
 
-interface GetNextCellPosition {
+export interface GetNextCellPosition {
   (lines: string[][], currentPosition: Position, previousPosition: Position): Position | null;
 }
 
@@ -18,7 +18,6 @@ export const findStartPosition: FindStartPosition = lines => {
     throw new Error(`lines number must be higher than 0`);
   }
   const column = lines[0]
-    .split('')
     .findIndex(char => char === '|');
   if (column === -1) {
     throw new Error(`this input doesn't have a starting point`);
@@ -114,8 +113,8 @@ export const getNextCellPosition: GetNextCellPosition = (lines, currentPosition,
 };
 
 export const day19Part1Factory = (input: string) => {
-  const lines = splitByRows(input);
-  const cells = lines.map(line => line.split(''));
-  const startPosition = findStartPosition(lines);
+  const cells = splitByRows(input)
+    .map(line => line.split(''));
+  const startPosition = findStartPosition(cells);
   return findLetters(cells, startPosition, getNextCellPosition);
 };
