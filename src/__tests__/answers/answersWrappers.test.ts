@@ -274,3 +274,12 @@ describe('day 19', () => {
     expect(answersWrappers.day19.part2(input)).toBe(38);
   });
 });
+
+describe('day 20', () => {
+  const input =
+    'p=<3,0,0>, v=<2,0,0>, a=<-1,0,0>\n' +
+    'p=< 4,0,0>, v=< 0,0,0>, a=<-2,0,0>';
+  it('part 1', () => {
+    expect(answersWrappers.day20.part1(input)).toBe(0);
+  });
+});
