@@ -16,16 +16,20 @@ interface ParseParticles {
   (input: string, splitByRows: SplitByRows): Particle[];
 }
 
-interface FindPositionInTime {
-  (particle: Particle, secs: number): Coordinate;
+export interface PassTimeThroughParticle {
+  (particle: Particle, secs: number): Particle;
 }
 
-interface GetManhattanDistance {
+export interface GetManhattanDistance {
   (coordinate: Coordinate): number;
 }
 
 interface FindClosestParticleIndex {
-  (particles: Particle[], findPositionInTime: FindPositionInTime, getManhattanDistance: GetManhattanDistance): number;
+  (
+    particles: Particle[],
+    passTimeThroughParticle: PassTimeThroughParticle,
+    getManhattanDistance: GetManhattanDistance
+  ): number;
 }
 
 export const parseParticles: ParseParticles = (input, splitByRowsFunc) =>
@@ -53,12 +57,21 @@ export const parseParticles: ParseParticles = (input, splitByRowsFunc) =>
       };
     });
 
-export const findPositionInTime: FindPositionInTime = (particle, secs) => {
-  // formula is S = S + v*t + at*t/2
+export const passTimeThroughParticle: PassTimeThroughParticle = (particle, secs) => {
+  // formula for path S = S + v*t + at*t/2
+  // formula for speed V = V + a*t
   return {
-    x: particle.position.x + particle.velocity.x * secs + particle.acceleration.x * secs * secs / 2,
-    y: particle.position.y + particle.velocity.y * secs + particle.acceleration.y * secs * secs / 2,
-    z: particle.position.z + particle.velocity.z * secs + particle.acceleration.z * secs * secs / 2,
+    acceleration: particle.acceleration,
+    velocity: {
+      x: particle.velocity.x + particle.acceleration.x * secs,
+      y: particle.velocity.y + particle.acceleration.y * secs,
+      z: particle.velocity.z + particle.acceleration.z * secs
+    },
+    position: {
+      x: particle.position.x + particle.velocity.x * secs + particle.acceleration.x * secs * secs / 2,
+      y: particle.position.y + particle.velocity.y * secs + particle.acceleration.y * secs * secs / 2,
+      z: particle.position.z + particle.velocity.z * secs + particle.acceleration.z * secs * secs / 2,
+    }
   };
 };
 
@@ -67,14 +80,14 @@ export const getManhattanDistance: GetManhattanDistance = coordinate =>
 
 export const findClosestParticleIndex: FindClosestParticleIndex = (
   particles,
-  findPositionInTimeFunc,
+  passTimeThroughParticleFunc,
   getManhattanDistanceFunc
 ) => {
   let closestIndex = 0;
   let closestDistance: number | null = null;
   particles.forEach((particle, index) => {
-    const currentPosition = findPositionInTime(particle, 10 ** 6);
-    const currentDistance = getManhattanDistance(currentPosition);
+    const currentParticle = passTimeThroughParticleFunc(particle, 10 ** 6);
+    const currentDistance = getManhattanDistanceFunc(currentParticle.position);
     if (closestDistance === null || closestDistance > currentDistance) {
       closestIndex = index;
       closestDistance = currentDistance;
@@ -85,5 +98,5 @@ export const findClosestParticleIndex: FindClosestParticleIndex = (
 
 export const day20Part1Factory = (input: string) => {
   const particles = parseParticles(input, splitByRows);
-  return findClosestParticleIndex(particles, findPositionInTime, getManhattanDistance);
+  return findClosestParticleIndex(particles, passTimeThroughParticle, getManhattanDistance);
 };

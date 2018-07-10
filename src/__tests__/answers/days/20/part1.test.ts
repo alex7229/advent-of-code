@@ -1,7 +1,8 @@
 import {
-  findClosestParticleIndex, findPositionInTime, getManhattanDistance,
+  findClosestParticleIndex,
+  getManhattanDistance,
   parseParticles,
-  Particle
+  Particle, passTimeThroughParticle
 } from '../../../../answers/days/20/part1';
 import { splitByRows } from '../../../../utils';
 
@@ -28,19 +29,19 @@ describe('day 20, part 1', () => {
     });
   });
 
-  describe('find particle position in time function', () => {
-    it('should calculate position correctly', () => {
+  describe('pass time through particle function', () => {
+    it('should calculate position and velocity correctly', () => {
       const particle: Particle = {
         position: { x: 3, y: 2, z: 7 },
         velocity: { x: 2, y: 2, z: 3 },
         acceleration: { x: -1, y: 5, z: 1 },
       };
-      const positionAfter2Secs = {
-        x: 5,
-        y: 16,
-        z: 15
+      const particleAfter2Secs: Particle = {
+        acceleration: particle.acceleration,
+        velocity: { x: 0, y: 12, z: 5 },
+        position: { x: 5, y: 16, z: 15 }
       };
-      expect(findPositionInTime(particle, 2)).toEqual(positionAfter2Secs);
+      expect(passTimeThroughParticle(particle, 2)).toEqual(particleAfter2Secs);
     });
   });
 
@@ -65,7 +66,7 @@ describe('day 20, part 1', () => {
           acceleration: { x: -2, y: 0, z: 0 },
         }
       ];
-      expect(findClosestParticleIndex(particles, findPositionInTime, getManhattanDistance)).toBe(0);
+      expect(findClosestParticleIndex(particles, passTimeThroughParticle, getManhattanDistance)).toBe(0);
     });
   });
 });
